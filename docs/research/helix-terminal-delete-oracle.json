@@ -1,0 +1,9 @@
+{
+  "case": "terminal-delete",
+  "exitCode": 0,
+  "editorRendered": true,
+  "sentKeysHex": "6c6c6469211b5b32317e",
+  "inputBefore": "abc",
+  "inputAfter": "ab!\n",
+  "output": "\u001b[?1049h\u001b[?1004h\u001b[?2004h\u001b[2J\u001b[?1000h\u001b[?1002h\u001b[?1003h\u001b[?1015h\u001b[?1006h\u001b[?u\u001b[c\u001b[1;1H\u001b[39;48;5;0m  \u001b[1m\u001b[38;5;15;48;5;0m  1\u001b[22m\u001b[39;48;5;0m  \u001b[7m\u001b[38;5;15;49ma\u001b[27m\u001b[39;49mbc\u001b[3m\u001b[38;5;8;49m \u001b[29;1H\u001b[23m\u001b[38;5;0;48;5;15m NOR   /var/folders/yd/xj1qfxs92zn29s1009vk5t5m0000gn/T/helix-final-delete-1zdnrjjc/terminal-delete.txt      1 sel  1:1 \u001b[30;1H\u001b[39;49mLoaded\u001b[30;8H1\u001b[30;10Hfile.\u001b[59m\u001b[39m\u001b[49m\u001b[0m\u001b[1;8H\u001b[?25l\u001b[1;8Ha\u001b[7m\u001b[38;5;15;49mb\u001b[29;119H\u001b[27m\u001b[38;5;0;48;5;15m2\u001b[30;1H\u001b[39;49m      \u001b[30;8H \u001b[30;10H     \u001b[59m\u001b[39m\u001b[49m\u001b[0m\u001b[1;9H\u001b[?25l\u001b[1;9Hb\u001b[7m\u001b[38;5;15;49mc\u001b[29;119H\u001b[27m\u001b[38;5;0;48;5;15m3\u001b[59m\u001b[39m\u001b[49m\u001b[0m\u001b[1;10H\u001b[?25l\u001b[1;10H\u001b[7m\u001b[3m\u001b[38;5;15;49m \u001b[27m\u001b[23m\u001b[39;49m \u001b[29;105H\u001b[38;5;0;48;5;15m[+]\u001b[59m\u001b[39m\u001b[49m\u001b[0m\u001b[1;10H\u001b[?25l\u001b[29;2H\u001b[38;5;0;48;5;15mINS\u001b[59m\u001b[39m\u001b[49m\u001b[0m\u001b[1;10H\u001b[?25l\u001b[1;10H!\u001b[7m\u001b[3m\u001b[38;5;15;49m \u001b[29;119H\u001b[27m\u001b[23m\u001b[38;5;0;48;5;15m4\u001b[59m\u001b[39m\u001b[49m\u001b[0m\u001b[1;11H\u001b[?25l\u001b[?25h\u001b[2 q\u001b[0 q\u001b[2 q\u001b[?12l\u001b[?25h\u001b[?1006l\u001b[?1015l\u001b[?1003l\u001b[?1002l\u001b[?1000l\u001b[?2004l\u001b[?1004l\u001b[?1049l"
+}
