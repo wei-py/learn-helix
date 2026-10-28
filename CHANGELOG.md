@@ -1,5 +1,11 @@
 # 更新记录
 
+## 未发布 · 修复 macOS Option 组合键
+
+- `keyFromEvent` 在 macOS 的 Option 产生非 ASCII 字符或死键时，以物理 `code` 恢复 US / ABC 的字母、数字和标点，避免把 Option+A/S/D/F 误识别为 `A-å / A-ß / A-∂ / A-ƒ`。共享修复覆盖练习与按键回忆，保留 Alt+Shift、CapsLock 的大小写区别；普通 Unicode、ASCII 逻辑键与非 macOS 布局不改写。
+- 新增组合键与布局边界回归；`npm test` 93 项通过、0 失败 / 跳过，`npm run build` 成功（16 模块，168ms）。
+- BrowserOS neo 页面注入 macOS 形态的 `ß + KeyS + Alt` 事件，实际执行按换行拆分，随后通过屏幕控件完成 `[red] / [green] / [blue]`；`Ç + KeyC + Alt+Shift` 的按键回忆正确记分。搜索框保留 `åß∂ƒ` 且不拦截 Option keydown。原生自动化组合键未可靠送达，本次浏览器证据是注入事件驱动真实应用，不冒充硬件 Option 按键或任意输入法实测。验证使用独立 localhost:5191，测试进度已清除；未修改线上存储或终端设置。
+
 ## 未发布 · 按指定文章出题
 
 - 出题主线切回 Tmacy 的《【推荐】后现代风格文本编辑器-Helix》；36 课按文章章节组织并提供章节链接，旧课程 ID / 进度不变。新增原文的多选区 `(use)` → `[use]` 与计数 2 只替换第二层包围例题，均使用真实编辑状态与独立目标。

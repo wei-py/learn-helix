@@ -311,7 +311,39 @@ export function validateBindings(input) {
   }
   return { values, errors, valid: !Object.keys(errors).length };
 }
-export function keyFromEvent(event) {
+const optionSymbols = {
+  Backquote: ["`", "~"],
+  Minus: ["-", "_"],
+  Equal: ["=", "+"],
+  BracketLeft: ["[", "{"],
+  BracketRight: ["]", "}"],
+  Backslash: ["\\", "|"],
+  Semicolon: [";", ":"],
+  Quote: ["'", '"'],
+  Comma: [",", "<"],
+  Period: [".", ">"],
+  Slash: ["/", "?"],
+  Space: [" ", " "],
+};
+export function keyFromEvent(event, platform = globalThis.navigator?.platform || "") {
+  let rawKey = event.key;
+  // macOS Option can report a composed glyph or dead key, not the shortcut key.
+  // Keep layout-provided ASCII keys; recover US/ABC positions only when needed.
+  if (
+    /Mac/.test(platform) &&
+    event.altKey &&
+    (rawKey === "Dead" || /^[^\x00-\x7f]$/u.test(rawKey))
+  ) {
+    if (/^Key[A-Z]$/.test(event.code)) {
+      const upper = Boolean(event.shiftKey) !== Boolean(event.getModifierState?.("CapsLock"));
+      rawKey = upper ? event.code.slice(3) : event.code.slice(3).toLowerCase();
+    } else if (/^Digit[0-9]$/.test(event.code)) {
+      const digit = event.code.slice(5);
+      rawKey = event.shiftKey ? ")!@#$%^&*("[Number(digit)] : digit;
+    } else {
+      rawKey = optionSymbols[event.code]?.[event.shiftKey ? 1 : 0] || rawKey;
+    }
+  }
   if (
     [
       "Shift",
@@ -321,10 +353,10 @@ export function keyFromEvent(event) {
       "Dead",
       "Process",
       "Unidentified",
-    ].includes(event.key)
+    ].includes(rawKey)
   )
     return null;
-  let key = aliases[event.key.toLowerCase()] || event.key;
+  let key = aliases[rawKey.toLowerCase()] || rawKey;
   const mods = [
     event.ctrlKey && "C",
     event.altKey && "A",

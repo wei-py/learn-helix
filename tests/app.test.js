@@ -476,6 +476,41 @@ test("native uppercase Alt and Shift normalization never collapses distinct comm
     "copy_selection_on_prev_line",
   );
 });
+test("macOS Option glyphs resolve to the intended Helix commands instead of Unicode shortcuts", () => {
+  for (const [key, code, expected] of [
+    ["å", "KeyA", "A-a"],
+    ["ß", "KeyS", "A-s"],
+    ["∂", "KeyD", "A-d"],
+    ["ƒ", "KeyF", "A-f"],
+    ["ç", "KeyC", "A-c"],
+    ["Dead", "KeyI", "A-i"],
+    ["…", "Semicolon", "A-;"],
+    ["–", "Minus", "A-minus"],
+    ["\u00a0", "Space", "A-space"],
+  ]) {
+    const actual = keyFromEvent(event(key, { code, altKey: true }), "MacIntel");
+    assert.equal(actual, expected);
+  }
+  const lower = keyFromEvent(event("ç", { code: "KeyC", altKey: true }), "MacIntel");
+  const upper = keyFromEvent(event("Ç", { code: "KeyC", altKey: true, shiftKey: true }), "MacIntel");
+  assert.equal(resolveKeyInput(DEFAULT_BINDINGS, "normal", [], lower).action.command, "change_selection_noyank");
+  assert.equal(resolveKeyInput(DEFAULT_BINDINGS, "normal", [], upper).action.command, "copy_selection_on_prev_line");
+  assert.equal(keyFromEvent(event("Ú", { code: "Semicolon", altKey: true, shiftKey: true }), "MacIntel"), "A-:");
+  assert.equal(keyFromEvent(event("·", { code: "Digit9", altKey: true, shiftKey: true }), "MacIntel"), "A-(");
+});
+test("Option recovery leaves ordinary Unicode, non-Mac layouts and ASCII logical keys intact", () => {
+  assert.equal(keyFromEvent(event("å", { code: "KeyA" }), "MacIntel"), "å");
+  assert.equal(keyFromEvent(event("Dead", { code: "KeyI" }), "MacIntel"), null);
+  assert.equal(keyFromEvent(event("é", { code: "KeyE", altKey: true }), "Linux"), "A-é");
+  assert.equal(keyFromEvent(event("a", { code: "KeyQ", altKey: true }), "MacIntel"), "A-a");
+  assert.equal(keyFromEvent(event("Dead", { code: "IntlYen", altKey: true }), "MacIntel"), null);
+  assert.equal(keyFromEvent(event("Å", {
+    code: "KeyA", altKey: true, getModifierState: (name) => name === "CapsLock",
+  }), "MacIntel"), "A-A");
+  assert.equal(keyFromEvent(event("å", {
+    code: "KeyA", altKey: true, shiftKey: true, getModifierState: (name) => name === "CapsLock",
+  }), "MacIntel"), "A-a");
+});
 test("old19 select Escape migrates to exit_select_mode without clobbering native v alias", () => {
   const old = { "select.normal": "esc", "normal.right": "l" };
   let migrated = migrateBindings(old);
