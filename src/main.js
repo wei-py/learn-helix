@@ -11,7 +11,6 @@ import {
   exportToml,
   actionForCommand,
   addBinding,
-  ALL_COMMANDS,
 } from "./bindings.js";
 import {
   CATEGORIES,
@@ -45,6 +44,7 @@ import { createNavigation } from "./navigation.js";
 import { mountVirtualList } from "./virtual-list.js";
 import { resolvePracticeInput, updateTextProgress } from "./practice-input.js";
 import { lessonAnswerMarkup } from "./lesson-answer.js";
+import { ARTICLE, ARTICLE_QUESTIONS, nextArticleQuestion } from "./article.js";
 
 const root = document.querySelector("#app");
 const scrollRoot = document.getElementById("scroll-root");
@@ -241,14 +241,14 @@ function render(focusId) {
         <div class="index-heading"><h2>课程</h2></div>
         <nav class="category-nav" aria-label="分类">${CATEGORIES.map((c) => `<button data-category="${c.id}" class="category-button ${category === c.id ? "active" : ""}" ${category === c.id ? 'aria-current="true"' : ""}><span class="category-icon">${c.icon}</span><span>${c.label}</span><small>${c.id === "all" ? LESSONS.length : LESSONS.filter((l) => l.category === c.id).length}</small></button>`).join("")}</nav>
         <div class="sidebar-label lesson-heading">练习列表 <span>${list.length} 课</span></div>
-        <nav class="lesson-list" aria-label="选择练习">${list.map((l) => `<button data-lesson="${l.id}" class="lesson-link ${l.id === lesson.id ? "active" : ""}" ${l.id === lesson.id ? 'aria-current="step"' : ""}><span class="lesson-status ${completed.includes(l.id) ? "done" : ""}">${completed.includes(l.id) ? "✓" : String(LESSONS.indexOf(l) + 1).padStart(2, "0")}</span><span>${l.title}</span>${l.id === lesson.id ? '<span class="tiny-arrow">↗</span>' : ""}</button>`).join("")}</nav>
+        <nav class="lesson-list" aria-label="选择练习">${list.map((l, index) => `${index === 0 || list[index - 1].source.section !== l.source.section ? `<div class="sidebar-label">${escape(l.source.section)}</div>` : ""}<button data-lesson="${l.id}" class="lesson-link ${l.id === lesson.id ? "active" : ""}" ${l.id === lesson.id ? 'aria-current="step"' : ""}><span class="lesson-status ${completed.includes(l.id) ? "done" : ""}">${completed.includes(l.id) ? "✓" : String(LESSONS.indexOf(l) + 1).padStart(2, "0")}</span><span>${l.title}</span>${l.id === lesson.id ? '<span class="tiny-arrow">↗</span>' : ""}</button>`).join("")}</nav>
         <div class="sidebar-bottom"><div class="progress-caption"><span>进度</span><strong>${total}<span> / ${LESSONS.length}</span></strong></div><div class="progress-track"><span style="width:${percent}%"></span></div><button class="text-button muted" data-action="clear-progress">重置进度</button></div>
       </aside>
       ${mobileMenu ? '<button class="drawer-scrim" data-action="menu" aria-label="关闭课程"></button>' : ""}
       <div class="workspace">
         <header class="topbar"><div class="breadcrumb"><button class="menu-button" data-action="menu" aria-label="切换课程" aria-expanded="${mobileMenu}">☰</button><strong>${track === "practice" ? categoryData.label : track === "library" ? "目录" : "回忆"}</strong></div><div class="topbar-actions"><button class="button small" data-action="settings">键位</button><button class="button small" data-action="export">导出</button><button class="button small" data-action="about">帮助</button></div></header>
         <main id="main-content" tabindex="-1">
-          <nav class="track-nav" aria-label="学习轨道"><button class="${track === "practice" ? "active" : ""}" data-action="practice">练习 <small>${completed.length}/${LESSONS.length}</small></button><button class="${track === "library" ? "active" : ""}" data-action="library">目录</button><button class="${track === "recall" ? "active" : ""}" data-action="recall-next">回忆 <small>${knowledge.length}</small></button></nav>
+          <nav class="track-nav" aria-label="学习轨道"><button class="${track === "practice" ? "active" : ""}" data-action="practice">练习 <small>${completed.length}/${LESSONS.length}</small></button><button class="${track === "library" ? "active" : ""}" data-action="library">目录</button><button class="${track === "recall" ? "active" : ""}" data-action="recall-next">文章回忆 <small>${ARTICLE_QUESTIONS.filter((q) => knowledge.includes(q.id)).length}/${ARTICLE_QUESTIONS.length}</small></button></nav>
           ${notice ? `<div class="notice" role="status">${escape(notice)}<button class="text-button" data-action="dismiss-notice" aria-label="关闭提示">×</button></div>` : ""}
           ${
             track === "library"
@@ -273,6 +273,7 @@ function render(focusId) {
             <section class="practice-panel" aria-labelledby="lesson-title">
               <div class="lesson-header"><div><div class="eyebrow subtle">练习 ${String(lessonIndex + 1).padStart(2, "0")} <span>/ ${String(LESSONS.length).padStart(2, "0")}</span></div><h2 id="lesson-title">${lesson.title}</h2></div><span class="topic-chip">${categoryData.icon} ${categoryData.label}</span></div>
               <p class="lesson-description">${escape(lesson.description)}</p>
+              <p class="source-note">依据 <a href="${escape(lesson.source.url)}" target="_blank" rel="noreferrer">${escape(lesson.source.section)} ↗</a> · <a href="${ARTICLE.url}" target="_blank" rel="noreferrer">原文</a></p>
               <div class="editor-chrome"><div class="editor-tab"><span class="file-dot"></span> practice.txt <span>×</span></div><span class="editor-caption">可交互的练习编辑区</span></div>
               <div id="editor" class="editor" tabindex="0" role="group" aria-label="Helix 练习编辑区，当前${MODES[state.mode]}模式。点击后可使用键盘练习。Tab 移至下一个控件。" aria-describedby="keyboard-help">${editorMarkup(state)}</div>
               <div class="editor-status"><span class="mode-badge ${state.mode}">${state.mode.toUpperCase()}</span><span>practice.txt</span><span class="editor-status-right">${pending.length ? `<b class="pending">${escape(displayKey(pending.join(" ")))} …</b>` : ""}<span>${state.text.slice(0, state.head).split("\n").length}:${state.head - state.text.lastIndexOf("\n", state.head - 1)}</span><span>UTF-8</span><span>TXT</span></span></div>
@@ -677,7 +678,7 @@ root.addEventListener("click", async (event) => {
   if (!button) return;
   if (button.dataset.recall) return chooseQuestion(button.dataset.recall);
   if (button.dataset.answer)
-    return answerQuestion(button.dataset.answer === question?.command);
+    return answerQuestion(button.dataset.answer === (question?.answer ?? question?.command));
   if (button.dataset.libraryKind) {
     catalogKind = button.dataset.libraryKind;
     catalogPage = 0;
@@ -759,13 +760,7 @@ root.addEventListener("click", async (event) => {
       );
       break;
     case "recall-next": {
-      const next =
-        ALL_COMMANDS.find((c) => !knowledge.includes(`command:${c.name}`)) ||
-        ALL_COMMANDS[
-          (ALL_COMMANDS.findIndex((c) => c.name === question?.command) + 1) %
-            ALL_COMMANDS.length
-        ];
-      chooseQuestion(`command:${next.name}`);
+      chooseQuestion(nextArticleQuestion(knowledge, question?.id).id);
       break;
     }
     case "recall-reveal":
@@ -1031,7 +1026,7 @@ if (history.state?.helix) restoreContext(history.state.context);
 else if (location.hash === "#library") track = "library";
 else if (location.hash === "#recall") {
   track = "recall";
-  question = recallQuestion(`command:${ALL_COMMANDS[0].name}`, bindings);
+  question = recallQuestion(nextArticleQuestion(knowledge).id, bindings);
 }
 navigation = createNavigation({
   history: window.history,

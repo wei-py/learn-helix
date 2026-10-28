@@ -9,6 +9,7 @@ import {
 } from "./bindings.js";
 import { COMMAND_ZH } from "./catalog-zh.js";
 import { CATALOG_VERSION, CATALOG_META } from "./catalog.js";
+import { ARTICLE, ARTICLE_QUESTIONS } from "./article.js";
 const esc = (value) =>
   String(value ?? "").replace(
     /[&<>"']/g,
@@ -129,9 +130,16 @@ export function libraryMarkup({
     }</div>
     <p class="catalog-result" role="status">找到 ${filtered.length} 项 · 第 ${current + 1} / ${pages} 页</p><div class="catalog-list">${cards}</div>
     <div class="lesson-footer"><button class="button" data-page="${Math.max(0, current - 1)}" ${current === 0 ? "disabled" : ""}>上一页</button><span>${current + 1} / ${pages}</span><button class="button" data-page="${Math.min(pages - 1, current + 1)}" ${current === pages - 1 ? "disabled" : ""}>下一页</button></div>
-    <details class="source-note"><summary>版本、覆盖口径与来源</summary><p>精确固定 ${CATALOG_VERSION}。绑定按 mode + 完整序列的每个叶节点计数；同命令多个别名不是多个命令。命令知识题包含全部静态及 typable 命令；不将查阅或按键回忆计为编辑能力。</p><pre>${esc(JSON.stringify(CATALOG_META.counts, null, 2))}</pre></details></section>`;
+    <details class="source-note"><summary>版本、覆盖口径与来源</summary><p>目录精确固定 ${CATALOG_VERSION}，仍可逐项自测；「回忆 / 下一题」只从<a href="${ARTICLE.url}" target="_blank" rel="noreferrer">指定文章</a>改编的题库出题，不从完整目录抽题。绑定按 mode + 完整序列的每个叶节点计数；同命令多个别名不是多个命令。不将查阅或按键回忆计为编辑能力。</p><pre>${esc(JSON.stringify(CATALOG_META.counts, null, 2))}</pre></details></section>`;
 }
 export function recallQuestion(id, bindings) {
+  if (id.startsWith("article:")) {
+    const question = ARTICLE_QUESTIONS.find((question) => question.id === id);
+    return question ? {
+      ...question,
+      officialDescription: ALL_COMMANDS.find((command) => command.name === question.command)?.description || "",
+    } : null;
+  }
   if (id.startsWith("binding:")) {
     const a = actionsFor(bindings).find((a) => bindingId(a) === id.slice(8));
     return a
@@ -174,22 +182,23 @@ export function recallMarkup(question, bindings, answer, revealed, pending) {
       commandName(a.command) === question.command && bindings[bindingId(a)],
   );
   const choices =
-    question.type === "command"
-      ? `<div class="recall-options">${question.options.map((c) => `<button class="button" data-answer="${esc(c.name)}"><code>${esc(c.name)}</code></button>`).join("")}</div>`
+    question.type !== "binding"
+      ? `<div class="recall-options">${question.options.map((c) => `<button class="button" data-answer="${esc(c.name)}">${question.type === "concept" ? esc(c.name) : `<code>${esc(c.name)}</code>`}</button>`).join("")}</div>`
       : `<div id="recall-keyboard" tabindex="0" class="recall-keyboard" role="group" aria-label="按键回忆输入区域">
         ${question.key ? "点击这里，输入当前配置的完整快捷键。Tab 可离开。" : "此绑定已移除；无需输入不存在的键。"}
         <strong>${esc(pending.length ? displayKey(pending.join(" ")) : "等待输入…")}</strong></div>
        ${question.key ? `<form id="recall-sequence-form" class="insert-form"><label for="recall-sequence">触屏 / 浏览器保留键：填写 Helix 键序列</label><div><input id="recall-sequence" required autocomplete="off" spellcheck="false" placeholder="例如 C-w h / tab"><button class="button" type="submit">检查键序列</button></div></form>` : `<p class="scope-note">已禁用的叶绑定不要求回忆不存在的快捷键。可恢复 / 新增配置后再练；这里不会给禁用项伪造完成标记。</p>`}`;
   return `<section class="catalog-panel recall-panel">
-    <h2>${question.type === "command" ? "选择命令" : "输入快捷键"}</h2>
-    <p class="recall-scenario">${esc(question.description)}</p><small lang="en">${esc(question.officialDescription)}</small>
+    <h2>${question.type === "concept" ? "文章理解" : question.type === "command" ? "选择命令" : "输入快捷键"}</h2>
+    ${question.source ? `<p class="source-note">文章题 ${ARTICLE_QUESTIONS.findIndex((q) => q.id === question.id) + 1} / ${ARTICLE_QUESTIONS.length} · <a href="${esc(question.source.url)}" target="_blank" rel="noreferrer">${esc(question.source.section)} ↗</a></p>` : '<p class="source-note">目录自测 · 下一题返回文章题库</p>'}
+    <p class="recall-scenario">${esc(question.description)}</p>${question.officialDescription ? `<small lang="en">${esc(question.officialDescription)}</small>` : ""}
     ${question.mode ? `<p>${MODES[question.mode]} · <code>${esc(question.command)}</code></p>` : ""}
     ${choices}
     ${answer ? `<p class="feedback ${answer === "correct" ? "success" : "error"}" role="status">${answer === "correct" ? "正确，已记录。" : "不匹配，请重试。"}</p>` : ""}
     <div class="lesson-footer"><button class="text-button" data-action="recall-reveal">${revealed ? "收起答案" : "查看答案"}</button><button class="button primary" data-action="recall-next">下一题 →</button><button class="text-button" data-action="library-return">返回目录</button></div>
     ${
       revealed
-        ? `<div class="scope-note"><code>${esc(question.command)}</code><p>${
+        ? `<div class="scope-note">${question.type === "concept" ? `<strong>${esc(question.answer)}</strong>` : `<code>${esc(question.command)}</code>`}${question.explanation ? `<p>${esc(question.explanation)}</p>` : ""}${question.type === "concept" ? "" : `<p>${
             mapped.length
               ? mapped
                   .map(
@@ -198,7 +207,7 @@ export function recallMarkup(question, bindings, answer, revealed, pending) {
                   .map(esc)
                   .join("<br>")
               : "没有默认或已配置绑定。命令行命令可用 : 输入，静态命令可在自定义键位添加。"
-          }</p><button class="button small" data-action="settings">编辑键位</button></div>`
+          }</p><button class="button small" data-action="settings">编辑键位</button>`}</div>`
         : ""
     }
   </section>`;
