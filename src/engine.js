@@ -12,6 +12,7 @@ import {
   actionsFor,
   bindingId,
 } from "./bindings.js";
+import { ARTICLE_CHAPTERS, ARTICLE_QUESTIONS, articleSource } from "./article.js";
 export const CATEGORIES = [
   {
     id: "all",
@@ -205,7 +206,15 @@ const BASIC_LESSONS = [
     tip: "这是一个真正的小编辑任务：光标移动、删除、插入和模式切换组合在一起。",
   },
 ];
-export const LESSONS = [...BASIC_LESSONS, ...ADVANCED_LESSONS];
+const lessonsById = new Map(
+  [...BASIC_LESSONS, ...ADVANCED_LESSONS].map((lesson) => [lesson.id, lesson]),
+);
+export const LESSONS = ARTICLE_CHAPTERS.flatMap((chapter) =>
+  chapter.lessons.map((id) => ({
+    ...lessonsById.get(id),
+    source: articleSource(chapter.id),
+  })),
+);
 
 export function createState(lesson) {
   return {
@@ -427,6 +436,7 @@ export function loadSaved(storage, validate, defaults) {
     if (!validate(restoredBindings).valid)
       throw new Error("invalid saved bindings");
     const knownKnowledge = new Set([
+      ...ARTICLE_QUESTIONS.map((question) => question.id),
       ...ALL_COMMANDS.map((command) => `command:${command.name}`),
       ...actionsFor(restoredBindings).map(
         (action) => `binding:${bindingId(action)}`,

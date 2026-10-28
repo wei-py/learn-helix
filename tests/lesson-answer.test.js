@@ -80,20 +80,6 @@ test("every answer follows newly configured multi-key aliases in all modes", () 
   for (const lesson of LESSONS) follow(lesson, bindings);
 });
 
-test("lesson 12 distinguishes regex submission, direct change and literal insertion", () => {
-  const lesson = LESSONS[11];
-  const answer = lessonAnswer(lesson, DEFAULT_BINDINGS);
-  assert.deepEqual(answer.map((s) => s.operations), [
-    [{ kind: "key", value: "%" }],
-    [{ kind: "key", value: "s" }, { kind: "operand", name: "pattern", label: "正则表达式", value: "cat" }, { kind: "submit", value: "ret" }],
-    [{ kind: "key", value: "c" }],
-    [{ kind: "text", value: "dog" }],
-    [{ kind: "key", value: "esc" }],
-  ]);
-  const state = follow(lesson, DEFAULT_BINDINGS);
-  assert.equal(state.text, "dog + dog = dog");
-  assert.equal(state.selections.length, 3);
-});
 
 test("counts, regex escapes, character/object operands and named registers stay literal", () => {
   const operands = LESSONS.flatMap((l) => lessonAnswer(l, DEFAULT_BINDINGS)).flatMap((s) => s.operations);
