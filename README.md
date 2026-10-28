@@ -40,6 +40,12 @@ npm run preview
 
 应用仍为静态站点，没有后端、账户、数据库或常驻原生编辑器进程。构建产物在 `dist/`，可静态部署。源码运行时是原生 ES modules 与 DOM；Vite 提供开发与构建工具。
 
+### GitHub Pages 发布
+
+仓库 Settings → Pages → Source 选择 **GitHub Actions**。将代码及 `.github/workflows/deploy.yml` 推送到 `main` 后，工作流会安装依赖、构建并发布 `dist/`；也可在 Actions 页面手动触发。
+
+构建使用 Pages 提供的 `base_path`，兼容仓库子路径与用户主页。部署成功后，在 Settings → Pages 查看访问地址；后续推送到 `main` 会自动更新。
+
 ## 三条学习轨道，三个不同的覆盖口径
 
 | 轨道 | 精确范围 | 完成意味着什么 |
