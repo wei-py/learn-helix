@@ -1,0 +1,294 @@
+{
+  "version": "25.07.1",
+  "date": "2026-10-28",
+  "checks": {
+    "independentLineParserAllBindings": true,
+    "uniqueModeKeyPairs": true,
+    "allLeavesRegistered": true,
+    "completeStaticRegistryNoRemainder": true,
+    "uniqueTypableNamesAndAliases": true,
+    "stickyPrefixesSourceMatched": true
+  },
+  "counts": {
+    "bindings": 671,
+    "normal": 322,
+    "select": 322,
+    "insert": 27,
+    "prefixes": 26,
+    "staticCommands": 305,
+    "typableCommands": 89,
+    "typableAliases": 69,
+    "distinctBoundCommands": 261,
+    "unboundStaticCommands": 44,
+    "multiKeyBindings": 410,
+    "macroBindings": 0,
+    "colonCommandBindings": 0
+  },
+  "selectOverrides": 32,
+  "unchangedInheritedSelectLeaves": 290,
+  "representativeCases": [
+    {
+      "mode": "normal",
+      "key": "g h",
+      "command": "goto_line_start",
+      "passed": true
+    },
+    {
+      "mode": "select",
+      "key": "g h",
+      "command": "goto_line_start",
+      "passed": true
+    },
+    {
+      "mode": "select",
+      "key": "g g",
+      "command": "extend_to_file_start",
+      "passed": true
+    },
+    {
+      "mode": "select",
+      "key": "g |",
+      "command": "extend_to_column",
+      "passed": true
+    },
+    {
+      "mode": "select",
+      "key": "esc",
+      "command": "exit_select_mode",
+      "passed": true
+    },
+    {
+      "mode": "normal",
+      "key": "A-minus",
+      "command": "merge_selections",
+      "passed": true
+    },
+    {
+      "mode": "normal",
+      "key": "space w n C-v",
+      "command": "vsplit_new",
+      "passed": true
+    },
+    {
+      "mode": "insert",
+      "key": "S-backspace",
+      "command": "delete_char_backward",
+      "passed": true
+    },
+    {
+      "mode": "normal",
+      "key": "space G s f",
+      "command": "dap_switch_stack_frame",
+      "passed": true
+    }
+  ],
+  "prefixesNormal": [
+    {
+      "mode": "normal",
+      "key": "g",
+      "keys": [
+        "g"
+      ],
+      "label": "Goto",
+      "group": "跳转",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "m",
+      "keys": [
+        "m"
+      ],
+      "label": "Match",
+      "group": "匹配与文本对象",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "[",
+      "keys": [
+        "["
+      ],
+      "label": "Left bracket",
+      "group": "上一个与前方",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "]",
+      "keys": [
+        "]"
+      ],
+      "label": "Right bracket",
+      "group": "下一个与后方",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "C-w",
+      "keys": [
+        "C-w"
+      ],
+      "label": "Window",
+      "group": "窗口管理",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "C-w n",
+      "keys": [
+        "C-w",
+        "n"
+      ],
+      "label": "New split scratch buffer",
+      "group": "新建分屏草稿",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "space",
+      "keys": [
+        "space"
+      ],
+      "label": "Space",
+      "group": "空格工具菜单",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "space G",
+      "keys": [
+        "space",
+        "G"
+      ],
+      "label": "Debug (experimental)",
+      "group": "调试（实验性）",
+      "sticky": true,
+      "inheritsSticky": true
+    },
+    {
+      "mode": "normal",
+      "key": "space G s",
+      "keys": [
+        "space",
+        "G",
+        "s"
+      ],
+      "label": "Switch",
+      "group": "调试切换",
+      "sticky": false,
+      "inheritsSticky": true
+    },
+    {
+      "mode": "normal",
+      "key": "space w",
+      "keys": [
+        "space",
+        "w"
+      ],
+      "label": "Window",
+      "group": "窗口管理",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "space w n",
+      "keys": [
+        "space",
+        "w",
+        "n"
+      ],
+      "label": "New split scratch buffer",
+      "group": "新建分屏草稿",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "z",
+      "keys": [
+        "z"
+      ],
+      "label": "View",
+      "group": "视图滚动",
+      "sticky": false,
+      "inheritsSticky": false
+    },
+    {
+      "mode": "normal",
+      "key": "Z",
+      "keys": [
+        "Z"
+      ],
+      "label": "View",
+      "group": "视图滚动",
+      "sticky": true,
+      "inheritsSticky": true
+    }
+  ],
+  "unboundStaticCommands": [
+    "copy_between_registers",
+    "extend_line",
+    "extend_line_above",
+    "extend_next_sub_word_end",
+    "extend_next_sub_word_start",
+    "extend_prev_long_word_end",
+    "extend_prev_sub_word_end",
+    "extend_prev_sub_word_start",
+    "extend_prev_word_end",
+    "extend_to_file_end",
+    "extend_to_first_nonwhitespace",
+    "extend_to_line_end_newline",
+    "file_explorer_in_current_directory",
+    "file_picker_in_current_buffer_directory",
+    "goto_file_end",
+    "goto_next_tabstop",
+    "goto_prev_tabstop",
+    "half_page_down",
+    "half_page_up",
+    "make_search_word_bounded",
+    "move_next_sub_word_end",
+    "move_next_sub_word_start",
+    "move_prev_long_word_end",
+    "move_prev_sub_word_end",
+    "move_prev_sub_word_start",
+    "move_prev_word_end",
+    "no_op",
+    "page_cursor_down",
+    "page_cursor_up",
+    "paste_primary_clipboard_after",
+    "paste_primary_clipboard_before",
+    "replace_selections_with_primary_clipboard",
+    "reverse_selection_contents",
+    "rotate_selections_first",
+    "rotate_selections_last",
+    "rotate_view_reverse",
+    "select_line_above",
+    "select_line_below",
+    "signature_help",
+    "yank_joined",
+    "yank_joined_to_clipboard",
+    "yank_joined_to_primary_clipboard",
+    "yank_main_selection_to_primary_clipboard",
+    "yank_to_primary_clipboard"
+  ],
+  "modernDocs": {
+    "url": "https://docs.helix-editor.com/keymap.html",
+    "version": "unversioned; not used as pinned binding authority",
+    "observedStaticCommandNamesAbsentFromPinnedRegistry": []
+  },
+  "notExecuted": [
+    "app tests",
+    "build",
+    "browser QA of integrated expansion",
+    "real-editor execution"
+  ]
+}

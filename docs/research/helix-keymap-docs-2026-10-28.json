@@ -1,0 +1,1485 @@
+{
+  "source": "https://docs.helix-editor.com/keymap.html",
+  "retrievedAt": "2026-10-28",
+  "version": "unversioned",
+  "tables": [
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "h, Left",
+          "Move left",
+          "move_char_left"
+        ],
+        [
+          "j, Down",
+          "Move down",
+          "move_visual_line_down"
+        ],
+        [
+          "k, Up",
+          "Move up",
+          "move_visual_line_up"
+        ],
+        [
+          "l, Right",
+          "Move right",
+          "move_char_right"
+        ],
+        [
+          "w",
+          "Move next word start",
+          "move_next_word_start"
+        ],
+        [
+          "b",
+          "Move previous word start",
+          "move_prev_word_start"
+        ],
+        [
+          "e",
+          "Move next word end",
+          "move_next_word_end"
+        ],
+        [
+          "W",
+          "Move next WORD start",
+          "move_next_long_word_start"
+        ],
+        [
+          "B",
+          "Move previous WORD start",
+          "move_prev_long_word_start"
+        ],
+        [
+          "E",
+          "Move next WORD end",
+          "move_next_long_word_end"
+        ],
+        [
+          "t",
+          "Find till next char",
+          "find_till_char"
+        ],
+        [
+          "f",
+          "Find next char",
+          "find_next_char"
+        ],
+        [
+          "T",
+          "Find till previous char",
+          "till_prev_char"
+        ],
+        [
+          "F",
+          "Find previous char",
+          "find_prev_char"
+        ],
+        [
+          "G",
+          "Go to line number <n>",
+          "goto_line"
+        ],
+        [
+          "Alt-.",
+          "Repeat last motion (f, t, m, [ or ])",
+          "repeat_last_motion"
+        ],
+        [
+          "Home",
+          "Move to the start of the line",
+          "goto_line_start"
+        ],
+        [
+          "End",
+          "Move to the end of the line",
+          "goto_line_end"
+        ],
+        [
+          "Ctrl-b, PageUp",
+          "Move page up",
+          "page_up"
+        ],
+        [
+          "Ctrl-f, PageDown",
+          "Move page down",
+          "page_down"
+        ],
+        [
+          "Ctrl-u",
+          "Move cursor and page half page up",
+          "page_cursor_half_up"
+        ],
+        [
+          "Ctrl-d",
+          "Move cursor and page half page down",
+          "page_cursor_half_down"
+        ],
+        [
+          "Ctrl-i",
+          "Jump forward on the jumplist",
+          "jump_forward"
+        ],
+        [
+          "Ctrl-o",
+          "Jump backward on the jumplist",
+          "jump_backward"
+        ],
+        [
+          "Ctrl-s",
+          "Save the current selection to the jumplist",
+          "save_selection"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "r",
+          "Replace with a character",
+          "replace"
+        ],
+        [
+          "R",
+          "Replace with yanked text",
+          "replace_with_yanked"
+        ],
+        [
+          "~",
+          "Switch case of the selected text",
+          "switch_case"
+        ],
+        [
+          "`",
+          "Set the selected text to lower case",
+          "switch_to_lowercase"
+        ],
+        [
+          "Alt-`",
+          "Set the selected text to upper case",
+          "switch_to_uppercase"
+        ],
+        [
+          "i",
+          "Insert before selection",
+          "insert_mode"
+        ],
+        [
+          "a",
+          "Insert after selection (append)",
+          "append_mode"
+        ],
+        [
+          "I",
+          "Insert at the start of the line",
+          "insert_at_line_start"
+        ],
+        [
+          "A",
+          "Insert at the end of the line",
+          "insert_at_line_end"
+        ],
+        [
+          "o",
+          "Open new line below selection",
+          "open_below"
+        ],
+        [
+          "O",
+          "Open new line above selection",
+          "open_above"
+        ],
+        [
+          ".",
+          "Repeat last insert",
+          "N/A"
+        ],
+        [
+          "u",
+          "Undo change",
+          "undo"
+        ],
+        [
+          "U",
+          "Redo change",
+          "redo"
+        ],
+        [
+          "Alt-u",
+          "Move backward in history",
+          "earlier"
+        ],
+        [
+          "Alt-U",
+          "Move forward in history",
+          "later"
+        ],
+        [
+          "y",
+          "Yank selection",
+          "yank"
+        ],
+        [
+          "p",
+          "Paste after selection",
+          "paste_after"
+        ],
+        [
+          "P",
+          "Paste before selection",
+          "paste_before"
+        ],
+        [
+          "\" <reg>",
+          "Select a register to yank to or paste from",
+          "select_register"
+        ],
+        [
+          ">",
+          "Indent selection",
+          "indent"
+        ],
+        [
+          "<",
+          "Unindent selection",
+          "unindent"
+        ],
+        [
+          "=",
+          "Format selection (LSP)",
+          "format_selections"
+        ],
+        [
+          "d",
+          "Delete selection",
+          "delete_selection"
+        ],
+        [
+          "Alt-d",
+          "Delete selection, without yanking",
+          "delete_selection_noyank"
+        ],
+        [
+          "c",
+          "Change selection (delete and enter insert mode)",
+          "change_selection"
+        ],
+        [
+          "Alt-c",
+          "Change selection (delete and enter insert mode, without yanking)",
+          "change_selection_noyank"
+        ],
+        [
+          "Ctrl-a",
+          "Increment object (number) under cursor",
+          "increment"
+        ],
+        [
+          "Ctrl-x",
+          "Decrement object (number) under cursor",
+          "decrement"
+        ],
+        [
+          "Q",
+          "Start/stop macro recording to the selected register (experimental)",
+          "record_macro"
+        ],
+        [
+          "q",
+          "Play back a recorded macro from the selected register (experimental)",
+          "replay_macro"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "|",
+          "Pipe each selection through shell command, replacing with output",
+          "shell_pipe"
+        ],
+        [
+          "Alt-|",
+          "Pipe each selection into shell command, ignoring output",
+          "shell_pipe_to"
+        ],
+        [
+          "!",
+          "Run shell command, inserting output before each selection",
+          "shell_insert_output"
+        ],
+        [
+          "Alt-!",
+          "Run shell command, appending output after each selection",
+          "shell_append_output"
+        ],
+        [
+          "$",
+          "Pipe each selection into shell command, keep selections where command returned 0",
+          "shell_keep_pipe"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "s",
+          "Select all regex matches inside selections",
+          "select_regex"
+        ],
+        [
+          "S",
+          "Split selection into sub selections on regex matches",
+          "split_selection"
+        ],
+        [
+          "Alt-s",
+          "Split selection on newlines",
+          "split_selection_on_newline"
+        ],
+        [
+          "Alt-minus",
+          "Merge selections",
+          "merge_selections"
+        ],
+        [
+          "Alt-_",
+          "Merge consecutive selections",
+          "merge_consecutive_selections"
+        ],
+        [
+          "&",
+          "Align selection in columns",
+          "align_selections"
+        ],
+        [
+          "_",
+          "Trim whitespace from the selection",
+          "trim_selections"
+        ],
+        [
+          ";",
+          "Collapse selection onto a single cursor",
+          "collapse_selection"
+        ],
+        [
+          "Alt-;",
+          "Flip selection cursor and anchor",
+          "flip_selections"
+        ],
+        [
+          "Alt-:",
+          "Ensures the selection is in forward direction",
+          "ensure_selections_forward"
+        ],
+        [
+          ",",
+          "Keep only the primary selection",
+          "keep_primary_selection"
+        ],
+        [
+          "Alt-,",
+          "Remove the primary selection",
+          "remove_primary_selection"
+        ],
+        [
+          "C",
+          "Copy selection onto the next line (Add cursor below)",
+          "copy_selection_on_next_line"
+        ],
+        [
+          "Alt-C",
+          "Copy selection onto the previous line (Add cursor above)",
+          "copy_selection_on_prev_line"
+        ],
+        [
+          "(",
+          "Rotate main selection backward",
+          "rotate_selections_backward"
+        ],
+        [
+          ")",
+          "Rotate main selection forward",
+          "rotate_selections_forward"
+        ],
+        [
+          "Alt-(",
+          "Rotate selection contents backward",
+          "rotate_selection_contents_backward"
+        ],
+        [
+          "Alt-)",
+          "Rotate selection contents forward",
+          "rotate_selection_contents_forward"
+        ],
+        [
+          "%",
+          "Select entire file",
+          "select_all"
+        ],
+        [
+          "x",
+          "Select current line, if already selected, extend to next line",
+          "extend_line_below"
+        ],
+        [
+          "X",
+          "Extend selection to line bounds (line-wise selection)",
+          "extend_to_line_bounds"
+        ],
+        [
+          "Alt-x",
+          "Shrink selection to line bounds (line-wise selection)",
+          "shrink_to_line_bounds"
+        ],
+        [
+          "J",
+          "Join lines inside selection",
+          "join_selections"
+        ],
+        [
+          "Alt-J",
+          "Join lines inside selection and select the inserted space",
+          "join_selections_space"
+        ],
+        [
+          "K",
+          "Keep selections matching the regex",
+          "keep_selections"
+        ],
+        [
+          "Alt-K",
+          "Remove selections matching the regex",
+          "remove_selections"
+        ],
+        [
+          "Ctrl-c",
+          "Comment/uncomment the selections",
+          "toggle_comments"
+        ],
+        [
+          "Alt-o, Alt-up",
+          "Expand selection to parent syntax node (TS)",
+          "expand_selection"
+        ],
+        [
+          "Alt-i, Alt-down",
+          "Shrink syntax tree object selection (TS)",
+          "shrink_selection"
+        ],
+        [
+          "Alt-p, Alt-left",
+          "Select previous sibling node in syntax tree (TS)",
+          "select_prev_sibling"
+        ],
+        [
+          "Alt-n, Alt-right",
+          "Select next sibling node in syntax tree (TS)",
+          "select_next_sibling"
+        ],
+        [
+          "Alt-a",
+          "Select all sibling nodes in syntax tree (TS)",
+          "select_all_siblings"
+        ],
+        [
+          "Alt-I, Alt-Shift-down",
+          "Select all children nodes in syntax tree (TS)",
+          "select_all_children"
+        ],
+        [
+          "Alt-e",
+          "Move to end of parent node in syntax tree (TS)",
+          "move_parent_node_end"
+        ],
+        [
+          "Alt-b",
+          "Move to start of parent node in syntax tree (TS)",
+          "move_parent_node_start"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "/",
+          "Search for regex pattern",
+          "search"
+        ],
+        [
+          "?",
+          "Search for previous pattern",
+          "rsearch"
+        ],
+        [
+          "n",
+          "Select next search match",
+          "search_next"
+        ],
+        [
+          "N",
+          "Select previous search match",
+          "search_prev"
+        ],
+        [
+          "*",
+          "Use current selection as the search pattern, automatically wrapping with \\b on word boundaries",
+          "search_selection_detect_word_boundaries"
+        ],
+        [
+          "Alt-*",
+          "Use current selection as the search pattern",
+          "search_selection"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "v",
+          "Enter select (extend) mode",
+          "select_mode"
+        ],
+        [
+          "g",
+          "Enter goto mode",
+          "N/A"
+        ],
+        [
+          "m",
+          "Enter match mode",
+          "N/A"
+        ],
+        [
+          ":",
+          "Enter command mode",
+          "command_mode"
+        ],
+        [
+          "z",
+          "Enter view mode",
+          "N/A"
+        ],
+        [
+          "Z",
+          "Enter sticky view mode",
+          "N/A"
+        ],
+        [
+          "Ctrl-w",
+          "Enter window mode",
+          "N/A"
+        ],
+        [
+          "Space",
+          "Enter space mode",
+          "N/A"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "z, c",
+          "Vertically center the line",
+          "align_view_center"
+        ],
+        [
+          "t",
+          "Align the line to the top of the screen",
+          "align_view_top"
+        ],
+        [
+          "b",
+          "Align the line to the bottom of the screen",
+          "align_view_bottom"
+        ],
+        [
+          "m",
+          "Align the line to the middle of the screen (horizontally)",
+          "align_view_middle"
+        ],
+        [
+          "j, down",
+          "Scroll the view downwards",
+          "scroll_down"
+        ],
+        [
+          "k, up",
+          "Scroll the view upwards",
+          "scroll_up"
+        ],
+        [
+          "Ctrl-f, PageDown",
+          "Move page down",
+          "page_down"
+        ],
+        [
+          "Ctrl-b, PageUp",
+          "Move page up",
+          "page_up"
+        ],
+        [
+          "Ctrl-u",
+          "Move cursor and page half page up",
+          "page_cursor_half_up"
+        ],
+        [
+          "Ctrl-d",
+          "Move cursor and page half page down",
+          "page_cursor_half_down"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "g",
+          "Go to line number <n> else start of file",
+          "goto_file_start"
+        ],
+        [
+          "|",
+          "Go to column number <n> else start of line",
+          "goto_column"
+        ],
+        [
+          "e",
+          "Go to the end of the file",
+          "goto_last_line"
+        ],
+        [
+          "f",
+          "Go to files in the selections",
+          "goto_file"
+        ],
+        [
+          "h",
+          "Go to the start of the line",
+          "goto_line_start"
+        ],
+        [
+          "l",
+          "Go to the end of the line",
+          "goto_line_end"
+        ],
+        [
+          "s",
+          "Go to first non-whitespace character of the line",
+          "goto_first_nonwhitespace"
+        ],
+        [
+          "t",
+          "Go to the top of the screen",
+          "goto_window_top"
+        ],
+        [
+          "c",
+          "Go to the middle of the screen",
+          "goto_window_center"
+        ],
+        [
+          "b",
+          "Go to the bottom of the screen",
+          "goto_window_bottom"
+        ],
+        [
+          "d",
+          "Go to definition (LSP)",
+          "goto_definition"
+        ],
+        [
+          "y",
+          "Go to type definition (LSP)",
+          "goto_type_definition"
+        ],
+        [
+          "r",
+          "Go to references (LSP)",
+          "goto_reference"
+        ],
+        [
+          "i",
+          "Go to implementation (LSP)",
+          "goto_implementation"
+        ],
+        [
+          "a",
+          "Go to the last accessed/alternate file",
+          "goto_last_accessed_file"
+        ],
+        [
+          "m",
+          "Go to the last modified/alternate file",
+          "goto_last_modified_file"
+        ],
+        [
+          "n",
+          "Go to next buffer",
+          "goto_next_buffer"
+        ],
+        [
+          "p",
+          "Go to previous buffer",
+          "goto_previous_buffer"
+        ],
+        [
+          ".",
+          "Go to last modification in current file",
+          "goto_last_modification"
+        ],
+        [
+          "j",
+          "Move down textual (instead of visual) line",
+          "move_line_down"
+        ],
+        [
+          "k",
+          "Move up textual (instead of visual) line",
+          "move_line_up"
+        ],
+        [
+          "w",
+          "Show labels at each word and select the word that belongs to the entered labels",
+          "goto_word"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "m",
+          "Goto matching bracket (TS)",
+          "match_brackets"
+        ],
+        [
+          "s <char>",
+          "Surround current selection with <char>",
+          "surround_add"
+        ],
+        [
+          "r <from><to>",
+          "Replace surround character <from> with <to>",
+          "surround_replace"
+        ],
+        [
+          "d <char>",
+          "Delete surround character <char>",
+          "surround_delete"
+        ],
+        [
+          "a <object>",
+          "Select around textobject",
+          "select_textobject_around"
+        ],
+        [
+          "i <object>",
+          "Select inside textobject",
+          "select_textobject_inner"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "w, Ctrl-w",
+          "Switch to next window",
+          "rotate_view"
+        ],
+        [
+          "v, Ctrl-v",
+          "Vertical right split",
+          "vsplit"
+        ],
+        [
+          "s, Ctrl-s",
+          "Horizontal bottom split",
+          "hsplit"
+        ],
+        [
+          "f",
+          "Go to files in the selections in horizontal splits",
+          "goto_file"
+        ],
+        [
+          "F",
+          "Go to files in the selections in vertical splits",
+          "goto_file"
+        ],
+        [
+          "h, Ctrl-h, Left",
+          "Move to left split",
+          "jump_view_left"
+        ],
+        [
+          "j, Ctrl-j, Down",
+          "Move to split below",
+          "jump_view_down"
+        ],
+        [
+          "k, Ctrl-k, Up",
+          "Move to split above",
+          "jump_view_up"
+        ],
+        [
+          "l, Ctrl-l, Right",
+          "Move to right split",
+          "jump_view_right"
+        ],
+        [
+          "q, Ctrl-q",
+          "Close current window",
+          "wclose"
+        ],
+        [
+          "o, Ctrl-o",
+          "Only keep the current window, closing all the others",
+          "wonly"
+        ],
+        [
+          "H",
+          "Swap window to the left",
+          "swap_view_left"
+        ],
+        [
+          "J",
+          "Swap window downwards",
+          "swap_view_down"
+        ],
+        [
+          "K",
+          "Swap window upwards",
+          "swap_view_up"
+        ],
+        [
+          "L",
+          "Swap window to the right",
+          "swap_view_right"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "f",
+          "Open file picker at LSP workspace root",
+          "file_picker"
+        ],
+        [
+          "F",
+          "Open file picker at current working directory",
+          "file_picker_in_current_directory"
+        ],
+        [
+          "b",
+          "Open buffer picker",
+          "buffer_picker"
+        ],
+        [
+          "j",
+          "Open jumplist picker",
+          "jumplist_picker"
+        ],
+        [
+          "g",
+          "Open changed file picker",
+          "changed_file_picker"
+        ],
+        [
+          "G",
+          "Debug (experimental)",
+          "N/A"
+        ],
+        [
+          "k",
+          "Show documentation for item under cursor in a popup (LSP)",
+          "hover"
+        ],
+        [
+          "s",
+          "Open document symbol picker (LSP)",
+          "symbol_picker"
+        ],
+        [
+          "S",
+          "Open workspace symbol picker (LSP)",
+          "workspace_symbol_picker"
+        ],
+        [
+          "d",
+          "Open document diagnostics picker (LSP)",
+          "diagnostics_picker"
+        ],
+        [
+          "D",
+          "Open workspace diagnostics picker (LSP)",
+          "workspace_diagnostics_picker"
+        ],
+        [
+          "r",
+          "Rename symbol (LSP)",
+          "rename_symbol"
+        ],
+        [
+          "a",
+          "Apply code action (LSP)",
+          "code_action"
+        ],
+        [
+          "h",
+          "Select symbol references (LSP)",
+          "select_references_to_symbol_under_cursor"
+        ],
+        [
+          "'",
+          "Open last fuzzy picker",
+          "last_picker"
+        ],
+        [
+          "w",
+          "Enter window mode",
+          "N/A"
+        ],
+        [
+          "c",
+          "Comment/uncomment selections",
+          "toggle_comments"
+        ],
+        [
+          "C",
+          "Block comment/uncomment selections",
+          "toggle_block_comments"
+        ],
+        [
+          "Alt-c",
+          "Line comment/uncomment selections",
+          "toggle_line_comments"
+        ],
+        [
+          "p",
+          "Paste system clipboard after selections",
+          "paste_clipboard_after"
+        ],
+        [
+          "P",
+          "Paste system clipboard before selections",
+          "paste_clipboard_before"
+        ],
+        [
+          "y",
+          "Yank selections to clipboard",
+          "yank_to_clipboard"
+        ],
+        [
+          "Y",
+          "Yank main selection to clipboard",
+          "yank_main_selection_to_clipboard"
+        ],
+        [
+          "R",
+          "Replace selections by clipboard contents",
+          "replace_selections_with_clipboard"
+        ],
+        [
+          "/",
+          "Global search in workspace folder",
+          "global_search"
+        ],
+        [
+          "?",
+          "Open command palette",
+          "command_palette"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description"
+        ],
+        [
+          "Ctrl-u",
+          "Scroll up"
+        ],
+        [
+          "Ctrl-d",
+          "Scroll down"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description"
+        ],
+        [
+          "Shift-Tab, Ctrl-p, Up",
+          "Previous entry"
+        ],
+        [
+          "Tab, Ctrl-n, Down",
+          "Next entry"
+        ],
+        [
+          "Enter",
+          "Close menu and accept completion"
+        ],
+        [
+          "Ctrl-c",
+          "Close menu and reject completion"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description"
+        ],
+        [
+          "Alt-p",
+          "Previous signature"
+        ],
+        [
+          "Alt-n",
+          "Next signature"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "]d",
+          "Go to next diagnostic (LSP)",
+          "goto_next_diag"
+        ],
+        [
+          "[d",
+          "Go to previous diagnostic (LSP)",
+          "goto_prev_diag"
+        ],
+        [
+          "]D",
+          "Go to last diagnostic in document (LSP)",
+          "goto_last_diag"
+        ],
+        [
+          "[D",
+          "Go to first diagnostic in document (LSP)",
+          "goto_first_diag"
+        ],
+        [
+          "]f",
+          "Go to next function (TS)",
+          "goto_next_function"
+        ],
+        [
+          "[f",
+          "Go to previous function (TS)",
+          "goto_prev_function"
+        ],
+        [
+          "]t",
+          "Go to next type definition (TS)",
+          "goto_next_class"
+        ],
+        [
+          "[t",
+          "Go to previous type definition (TS)",
+          "goto_prev_class"
+        ],
+        [
+          "]a",
+          "Go to next argument/parameter (TS)",
+          "goto_next_parameter"
+        ],
+        [
+          "[a",
+          "Go to previous argument/parameter (TS)",
+          "goto_prev_parameter"
+        ],
+        [
+          "]c",
+          "Go to next comment (TS)",
+          "goto_next_comment"
+        ],
+        [
+          "[c",
+          "Go to previous comment (TS)",
+          "goto_prev_comment"
+        ],
+        [
+          "]T",
+          "Go to next test (TS)",
+          "goto_next_test"
+        ],
+        [
+          "[T",
+          "Go to previous test (TS)",
+          "goto_prev_test"
+        ],
+        [
+          "]p",
+          "Go to next paragraph",
+          "goto_next_paragraph"
+        ],
+        [
+          "[p",
+          "Go to previous paragraph",
+          "goto_prev_paragraph"
+        ],
+        [
+          "]g",
+          "Go to next change",
+          "goto_next_change"
+        ],
+        [
+          "[g",
+          "Go to previous change",
+          "goto_prev_change"
+        ],
+        [
+          "]G",
+          "Go to last change",
+          "goto_last_change"
+        ],
+        [
+          "[G",
+          "Go to first change",
+          "goto_first_change"
+        ],
+        [
+          "]Space",
+          "Add newline below",
+          "add_newline_below"
+        ],
+        [
+          "[Space",
+          "Add newline above",
+          "add_newline_above"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "Escape",
+          "Switch to normal mode",
+          "normal_mode"
+        ],
+        [
+          "Ctrl-s",
+          "Commit undo checkpoint",
+          "commit_undo_checkpoint"
+        ],
+        [
+          "Ctrl-x",
+          "Autocomplete",
+          "completion"
+        ],
+        [
+          "Ctrl-r",
+          "Insert a register content",
+          "insert_register"
+        ],
+        [
+          "Ctrl-w, Alt-Backspace",
+          "Delete previous word",
+          "delete_word_backward"
+        ],
+        [
+          "Alt-d, Alt-Delete",
+          "Delete next word",
+          "delete_word_forward"
+        ],
+        [
+          "Ctrl-u",
+          "Delete to start of line",
+          "kill_to_line_start"
+        ],
+        [
+          "Ctrl-k",
+          "Delete to end of line",
+          "kill_to_line_end"
+        ],
+        [
+          "Ctrl-h, Backspace, Shift-Backspace",
+          "Delete previous char",
+          "delete_char_backward"
+        ],
+        [
+          "Ctrl-d, Delete",
+          "Delete next char",
+          "delete_char_forward"
+        ],
+        [
+          "Ctrl-j, Enter",
+          "Insert new line",
+          "insert_newline"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description",
+          "Command"
+        ],
+        [
+          "Up",
+          "Move to previous line",
+          "move_line_up"
+        ],
+        [
+          "Down",
+          "Move to next line",
+          "move_line_down"
+        ],
+        [
+          "Left",
+          "Backward a char",
+          "move_char_left"
+        ],
+        [
+          "Right",
+          "Forward a char",
+          "move_char_right"
+        ],
+        [
+          "PageUp",
+          "Move one page up",
+          "page_up"
+        ],
+        [
+          "PageDown",
+          "Move one page down",
+          "page_down"
+        ],
+        [
+          "Home",
+          "Move to line start",
+          "goto_line_start"
+        ],
+        [
+          "End",
+          "Move to line end",
+          "goto_line_end_newline"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description"
+        ],
+        [
+          "Shift-Tab, Up, Ctrl-p",
+          "Previous entry"
+        ],
+        [
+          "Tab, Down, Ctrl-n",
+          "Next entry"
+        ],
+        [
+          "PageUp, Ctrl-u",
+          "Page up"
+        ],
+        [
+          "PageDown, Ctrl-d",
+          "Page down"
+        ],
+        [
+          "Home",
+          "Go to first entry"
+        ],
+        [
+          "End",
+          "Go to last entry"
+        ],
+        [
+          "Enter",
+          "Open selected"
+        ],
+        [
+          "Alt-Enter",
+          "Open selected in the background without closing the picker"
+        ],
+        [
+          "Ctrl-s",
+          "Open horizontally"
+        ],
+        [
+          "Ctrl-v",
+          "Open vertically"
+        ],
+        [
+          "Ctrl-t",
+          "Toggle preview"
+        ],
+        [
+          "Escape, Ctrl-c",
+          "Close picker"
+        ]
+      ]
+    },
+    {
+      "rows": [
+        [
+          "Key",
+          "Description"
+        ],
+        [
+          "Escape, Ctrl-c",
+          "Close prompt"
+        ],
+        [
+          "Alt-b, Ctrl-Left",
+          "Backward a word"
+        ],
+        [
+          "Ctrl-b, Left",
+          "Backward a char"
+        ],
+        [
+          "Alt-f, Ctrl-Right",
+          "Forward a word"
+        ],
+        [
+          "Ctrl-f, Right",
+          "Forward a char"
+        ],
+        [
+          "Ctrl-e, End",
+          "Move prompt end"
+        ],
+        [
+          "Ctrl-a, Home",
+          "Move prompt start"
+        ],
+        [
+          "Ctrl-w, Alt-Backspace, Ctrl-Backspace",
+          "Delete previous word"
+        ],
+        [
+          "Alt-d, Alt-Delete, Ctrl-Delete",
+          "Delete next word"
+        ],
+        [
+          "Ctrl-u",
+          "Delete to start of line"
+        ],
+        [
+          "Ctrl-k",
+          "Delete to end of line"
+        ],
+        [
+          "Backspace, Ctrl-h, Shift-Backspace",
+          "Delete previous char"
+        ],
+        [
+          "Delete, Ctrl-d",
+          "Delete next char"
+        ],
+        [
+          "Ctrl-s",
+          "Insert a word under doc cursor, may be changed to Ctrl-r Ctrl-w later"
+        ],
+        [
+          "Ctrl-p, Up",
+          "Select previous history"
+        ],
+        [
+          "Ctrl-n, Down",
+          "Select next history"
+        ],
+        [
+          "Ctrl-r",
+          "Insert the content of the register selected by following input char"
+        ],
+        [
+          "Tab",
+          "Select next completion item"
+        ],
+        [
+          "BackTab",
+          "Select previous completion item"
+        ],
+        [
+          "Enter",
+          "Open selected"
+        ]
+      ]
+    }
+  ],
+  "text": "Keymap\nNormal mode\nMovement\nChanges\nShell\nSelection manipulation\nSearch\nMinor modes\nView mode\nGoto mode\nMatch mode\nWindow mode\nSpace mode\nPopup\nCompletion Menu\nSignature-help Popup\nUnimpaired\nInsert mode\nSelect / extend mode\nPicker\nPrompt\n\n💡 Mappings marked (LSP) require an active language server for the file.\n\n💡 Mappings marked (TS) require a tree-sitter grammar for the file type.\n\n⚠️ Some terminals' default key mappings conflict with Helix's. If any of the mappings described on this page do not work as expected, check your terminal's mappings to ensure they do not conflict. See the wiki for known conflicts.\n\nNormal mode\n\nNormal mode is the default mode when you launch helix. You can return to it from other modes by pressing the Escape key.\n\nMovement\n\nNOTE: Unlike Vim, f, F, t and T are not confined to the current line.\n\nKey\tDescription\tCommand\nh, Left\tMove left\tmove_char_left\nj, Down\tMove down\tmove_visual_line_down\nk, Up\tMove up\tmove_visual_line_up\nl, Right\tMove right\tmove_char_right\nw\tMove next word start\tmove_next_word_start\nb\tMove previous word start\tmove_prev_word_start\ne\tMove next word end\tmove_next_word_end\nW\tMove next WORD start\tmove_next_long_word_start\nB\tMove previous WORD start\tmove_prev_long_word_start\nE\tMove next WORD end\tmove_next_long_word_end\nt\tFind till next char\tfind_till_char\nf\tFind next char\tfind_next_char\nT\tFind till previous char\ttill_prev_char\nF\tFind previous char\tfind_prev_char\nG\tGo to line number <n>\tgoto_line\nAlt-.\tRepeat last motion (f, t, m, [ or ])\trepeat_last_motion\nHome\tMove to the start of the line\tgoto_line_start\nEnd\tMove to the end of the line\tgoto_line_end\nCtrl-b, PageUp\tMove page up\tpage_up\nCtrl-f, PageDown\tMove page down\tpage_down\nCtrl-u\tMove cursor and page half page up\tpage_cursor_half_up\nCtrl-d\tMove cursor and page half page down\tpage_cursor_half_down\nCtrl-i\tJump forward on the jumplist\tjump_forward\nCtrl-o\tJump backward on the jumplist\tjump_backward\nCtrl-s\tSave the current selection to the jumplist\tsave_selection\nChanges\nKey\tDescription\tCommand\nr\tReplace with a character\treplace\nR\tReplace with yanked text\treplace_with_yanked\n~\tSwitch case of the selected text\tswitch_case\n`\tSet the selected text to lower case\tswitch_to_lowercase\nAlt-`\tSet the selected text to upper case\tswitch_to_uppercase\ni\tInsert before selection\tinsert_mode\na\tInsert after selection (append)\tappend_mode\nI\tInsert at the start of the line\tinsert_at_line_start\nA\tInsert at the end of the line\tinsert_at_line_end\no\tOpen new line below selection\topen_below\nO\tOpen new line above selection\topen_above\n.\tRepeat last insert\tN/A\nu\tUndo change\tundo\nU\tRedo change\tredo\nAlt-u\tMove backward in history\tearlier\nAlt-U\tMove forward in history\tlater\ny\tYank selection\tyank\np\tPaste after selection\tpaste_after\nP\tPaste before selection\tpaste_before\n\" <reg>\tSelect a register to yank to or paste from\tselect_register\n>\tIndent selection\tindent\n<\tUnindent selection\tunindent\n=\tFormat selection (LSP)\tformat_selections\nd\tDelete selection\tdelete_selection\nAlt-d\tDelete selection, without yanking\tdelete_selection_noyank\nc\tChange selection (delete and enter insert mode)\tchange_selection\nAlt-c\tChange selection (delete and enter insert mode, without yanking)\tchange_selection_noyank\nCtrl-a\tIncrement object (number) under cursor\tincrement\nCtrl-x\tDecrement object (number) under cursor\tdecrement\nQ\tStart/stop macro recording to the selected register (experimental)\trecord_macro\nq\tPlay back a recorded macro from the selected register (experimental)\treplay_macro\nShell\nKey\tDescription\tCommand\n|\tPipe each selection through shell command, replacing with output\tshell_pipe\nAlt-|\tPipe each selection into shell command, ignoring output\tshell_pipe_to\n!\tRun shell command, inserting output before each selection\tshell_insert_output\nAlt-!\tRun shell command, appending output after each selection\tshell_append_output\n$\tPipe each selection into shell command, keep selections where command returned 0\tshell_keep_pipe\nSelection manipulation\nKey\tDescription\tCommand\ns\tSelect all regex matches inside selections\tselect_regex\nS\tSplit selection into sub selections on regex matches\tsplit_selection\nAlt-s\tSplit selection on newlines\tsplit_selection_on_newline\nAlt-minus\tMerge selections\tmerge_selections\nAlt-_\tMerge consecutive selections\tmerge_consecutive_selections\n&\tAlign selection in columns\talign_selections\n_\tTrim whitespace from the selection\ttrim_selections\n;\tCollapse selection onto a single cursor\tcollapse_selection\nAlt-;\tFlip selection cursor and anchor\tflip_selections\nAlt-:\tEnsures the selection is in forward direction\tensure_selections_forward\n,\tKeep only the primary selection\tkeep_primary_selection\nAlt-,\tRemove the primary selection\tremove_primary_selection\nC\tCopy selection onto the next line (Add cursor below)\tcopy_selection_on_next_line\nAlt-C\tCopy selection onto the previous line (Add cursor above)\tcopy_selection_on_prev_line\n(\tRotate main selection backward\trotate_selections_backward\n)\tRotate main selection forward\trotate_selections_forward\nAlt-(\tRotate selection contents backward\trotate_selection_contents_backward\nAlt-)\tRotate selection contents forward\trotate_selection_contents_forward\n%\tSelect entire file\tselect_all\nx\tSelect current line, if already selected, extend to next line\textend_line_below\nX\tExtend selection to line bounds (line-wise selection)\textend_to_line_bounds\nAlt-x\tShrink selection to line bounds (line-wise selection)\tshrink_to_line_bounds\nJ\tJoin lines inside selection\tjoin_selections\nAlt-J\tJoin lines inside selection and select the inserted space\tjoin_selections_space\nK\tKeep selections matching the regex\tkeep_selections\nAlt-K\tRemove selections matching the regex\tremove_selections\nCtrl-c\tComment/uncomment the selections\ttoggle_comments\nAlt-o, Alt-up\tExpand selection to parent syntax node (TS)\texpand_selection\nAlt-i, Alt-down\tShrink syntax tree object selection (TS)\tshrink_selection\nAlt-p, Alt-left\tSelect previous sibling node in syntax tree (TS)\tselect_prev_sibling\nAlt-n, Alt-right\tSelect next sibling node in syntax tree (TS)\tselect_next_sibling\nAlt-a\tSelect all sibling nodes in syntax tree (TS)\tselect_all_siblings\nAlt-I, Alt-Shift-down\tSelect all children nodes in syntax tree (TS)\tselect_all_children\nAlt-e\tMove to end of parent node in syntax tree (TS)\tmove_parent_node_end\nAlt-b\tMove to start of parent node in syntax tree (TS)\tmove_parent_node_start\nSearch\n\nSearch commands all operate on the / register by default. To use a different register, use \"<char>.\n\nKey\tDescription\tCommand\n/\tSearch for regex pattern\tsearch\n?\tSearch for previous pattern\trsearch\nn\tSelect next search match\tsearch_next\nN\tSelect previous search match\tsearch_prev\n*\tUse current selection as the search pattern, automatically wrapping with \\b on word boundaries\tsearch_selection_detect_word_boundaries\nAlt-*\tUse current selection as the search pattern\tsearch_selection\nMinor modes\n\nThese sub-modes are accessible from normal mode and typically switch back to normal mode after a command.\n\nKey\tDescription\tCommand\nv\tEnter select (extend) mode\tselect_mode\ng\tEnter goto mode\tN/A\nm\tEnter match mode\tN/A\n:\tEnter command mode\tcommand_mode\nz\tEnter view mode\tN/A\nZ\tEnter sticky view mode\tN/A\nCtrl-w\tEnter window mode\tN/A\nSpace\tEnter space mode\tN/A\n\nThese modes (except command mode) can be configured by remapping keys.\n\nView mode\n\nAccessed by typing z in normal mode.\n\nView mode is intended for scrolling and manipulating the view without changing the selection. The \"sticky\" variant of this mode (accessed by typing Z in normal mode) is persistent and can be exited using the escape key. This is useful when you're simply looking over text and not actively editing it.\n\nKey\tDescription\tCommand\nz, c\tVertically center the line\talign_view_center\nt\tAlign the line to the top of the screen\talign_view_top\nb\tAlign the line to the bottom of the screen\talign_view_bottom\nm\tAlign the line to the middle of the screen (horizontally)\talign_view_middle\nj, down\tScroll the view downwards\tscroll_down\nk, up\tScroll the view upwards\tscroll_up\nCtrl-f, PageDown\tMove page down\tpage_down\nCtrl-b, PageUp\tMove page up\tpage_up\nCtrl-u\tMove cursor and page half page up\tpage_cursor_half_up\nCtrl-d\tMove cursor and page half page down\tpage_cursor_half_down\nGoto mode\n\nAccessed by typing g in normal mode.\n\nJumps to various locations.\n\nKey\tDescription\tCommand\ng\tGo to line number <n> else start of file\tgoto_file_start\n|\tGo to column number <n> else start of line\tgoto_column\ne\tGo to the end of the file\tgoto_last_line\nf\tGo to files in the selections\tgoto_file\nh\tGo to the start of the line\tgoto_line_start\nl\tGo to the end of the line\tgoto_line_end\ns\tGo to first non-whitespace character of the line\tgoto_first_nonwhitespace\nt\tGo to the top of the screen\tgoto_window_top\nc\tGo to the middle of the screen\tgoto_window_center\nb\tGo to the bottom of the screen\tgoto_window_bottom\nd\tGo to definition (LSP)\tgoto_definition\ny\tGo to type definition (LSP)\tgoto_type_definition\nr\tGo to references (LSP)\tgoto_reference\ni\tGo to implementation (LSP)\tgoto_implementation\na\tGo to the last accessed/alternate file\tgoto_last_accessed_file\nm\tGo to the last modified/alternate file\tgoto_last_modified_file\nn\tGo to next buffer\tgoto_next_buffer\np\tGo to previous buffer\tgoto_previous_buffer\n.\tGo to last modification in current file\tgoto_last_modification\nj\tMove down textual (instead of visual) line\tmove_line_down\nk\tMove up textual (instead of visual) line\tmove_line_up\nw\tShow labels at each word and select the word that belongs to the entered labels\tgoto_word\nMatch mode\n\nAccessed by typing m in normal mode.\n\nPlease refer to the relevant sections for detailed explanations about surround and textobjects.\n\nKey\tDescription\tCommand\nm\tGoto matching bracket (TS)\tmatch_brackets\ns <char>\tSurround current selection with <char>\tsurround_add\nr <from><to>\tReplace surround character <from> with <to>\tsurround_replace\nd <char>\tDelete surround character <char>\tsurround_delete\na <object>\tSelect around textobject\tselect_textobject_around\ni <object>\tSelect inside textobject\tselect_textobject_inner\n\nTODO: Mappings for selecting syntax nodes (a superset of [).\n\nWindow mode\n\nAccessed by typing Ctrl-w in normal mode.\n\nThis layer is similar to Vim keybindings as Kakoune does not support windows.\n\nKey\tDescription\tCommand\nw, Ctrl-w\tSwitch to next window\trotate_view\nv, Ctrl-v\tVertical right split\tvsplit\ns, Ctrl-s\tHorizontal bottom split\thsplit\nf\tGo to files in the selections in horizontal splits\tgoto_file\nF\tGo to files in the selections in vertical splits\tgoto_file\nh, Ctrl-h, Left\tMove to left split\tjump_view_left\nj, Ctrl-j, Down\tMove to split below\tjump_view_down\nk, Ctrl-k, Up\tMove to split above\tjump_view_up\nl, Ctrl-l, Right\tMove to right split\tjump_view_right\nq, Ctrl-q\tClose current window\twclose\no, Ctrl-o\tOnly keep the current window, closing all the others\twonly\nH\tSwap window to the left\tswap_view_left\nJ\tSwap window downwards\tswap_view_down\nK\tSwap window upwards\tswap_view_up\nL\tSwap window to the right\tswap_view_right\nSpace mode\n\nAccessed by typing Space in normal mode.\n\nThis layer is a kludge of mappings, mostly pickers.\n\nKey\tDescription\tCommand\nf\tOpen file picker at LSP workspace root\tfile_picker\nF\tOpen file picker at current working directory\tfile_picker_in_current_directory\nb\tOpen buffer picker\tbuffer_picker\nj\tOpen jumplist picker\tjumplist_picker\ng\tOpen changed file picker\tchanged_file_picker\nG\tDebug (experimental)\tN/A\nk\tShow documentation for item under cursor in a popup (LSP)\thover\ns\tOpen document symbol picker (LSP)\tsymbol_picker\nS\tOpen workspace symbol picker (LSP)\tworkspace_symbol_picker\nd\tOpen document diagnostics picker (LSP)\tdiagnostics_picker\nD\tOpen workspace diagnostics picker (LSP)\tworkspace_diagnostics_picker\nr\tRename symbol (LSP)\trename_symbol\na\tApply code action (LSP)\tcode_action\nh\tSelect symbol references (LSP)\tselect_references_to_symbol_under_cursor\n'\tOpen last fuzzy picker\tlast_picker\nw\tEnter window mode\tN/A\nc\tComment/uncomment selections\ttoggle_comments\nC\tBlock comment/uncomment selections\ttoggle_block_comments\nAlt-c\tLine comment/uncomment selections\ttoggle_line_comments\np\tPaste system clipboard after selections\tpaste_clipboard_after\nP\tPaste system clipboard before selections\tpaste_clipboard_before\ny\tYank selections to clipboard\tyank_to_clipboard\nY\tYank main selection to clipboard\tyank_main_selection_to_clipboard\nR\tReplace selections by clipboard contents\treplace_selections_with_clipboard\n/\tGlobal search in workspace folder\tglobal_search\n?\tOpen command palette\tcommand_palette\n\n💡 Global search displays results in a fuzzy picker, use Space + ' to bring it back up after opening a file.\n\nPopup\n\nDisplays documentation for item under cursor. Remapping currently not supported.\n\nKey\tDescription\nCtrl-u\tScroll up\nCtrl-d\tScroll down\nCompletion Menu\n\nDisplays documentation for the selected completion item. Remapping currently not supported.\n\nKey\tDescription\nShift-Tab, Ctrl-p, Up\tPrevious entry\nTab, Ctrl-n, Down\tNext entry\nEnter\tClose menu and accept completion\nCtrl-c\tClose menu and reject completion\n\nAny other keypresses result in the completion being accepted.\n\nSignature-help Popup\n\nDisplays the signature of the selected completion item. Remapping currently not supported.\n\nKey\tDescription\nAlt-p\tPrevious signature\nAlt-n\tNext signature\nUnimpaired\n\nThese mappings are in the style of vim-unimpaired.\n\nKey\tDescription\tCommand\n]d\tGo to next diagnostic (LSP)\tgoto_next_diag\n[d\tGo to previous diagnostic (LSP)\tgoto_prev_diag\n]D\tGo to last diagnostic in document (LSP)\tgoto_last_diag\n[D\tGo to first diagnostic in document (LSP)\tgoto_first_diag\n]f\tGo to next function (TS)\tgoto_next_function\n[f\tGo to previous function (TS)\tgoto_prev_function\n]t\tGo to next type definition (TS)\tgoto_next_class\n[t\tGo to previous type definition (TS)\tgoto_prev_class\n]a\tGo to next argument/parameter (TS)\tgoto_next_parameter\n[a\tGo to previous argument/parameter (TS)\tgoto_prev_parameter\n]c\tGo to next comment (TS)\tgoto_next_comment\n[c\tGo to previous comment (TS)\tgoto_prev_comment\n]T\tGo to next test (TS)\tgoto_next_test\n[T\tGo to previous test (TS)\tgoto_prev_test\n]p\tGo to next paragraph\tgoto_next_paragraph\n[p\tGo to previous paragraph\tgoto_prev_paragraph\n]g\tGo to next change\tgoto_next_change\n[g\tGo to previous change\tgoto_prev_change\n]G\tGo to last change\tgoto_last_change\n[G\tGo to first change\tgoto_first_change\n]Space\tAdd newline below\tadd_newline_below\n[Space\tAdd newline above\tadd_newline_above\nInsert mode\n\nAccessed by typing i in normal mode.\n\nInsert mode bindings are minimal by default. Helix is designed to be a modal editor, and this is reflected in the user experience and internal mechanics. Changes to the text are only saved for undos when escaping from insert mode to normal mode.\n\n💡 New users are strongly encouraged to learn the modal editing paradigm to get the smoothest experience.\n\nKey\tDescription\tCommand\nEscape\tSwitch to normal mode\tnormal_mode\nCtrl-s\tCommit undo checkpoint\tcommit_undo_checkpoint\nCtrl-x\tAutocomplete\tcompletion\nCtrl-r\tInsert a register content\tinsert_register\nCtrl-w, Alt-Backspace\tDelete previous word\tdelete_word_backward\nAlt-d, Alt-Delete\tDelete next word\tdelete_word_forward\nCtrl-u\tDelete to start of line\tkill_to_line_start\nCtrl-k\tDelete to end of line\tkill_to_line_end\nCtrl-h, Backspace, Shift-Backspace\tDelete previous char\tdelete_char_backward\nCtrl-d, Delete\tDelete next char\tdelete_char_forward\nCtrl-j, Enter\tInsert new line\tinsert_newline\n\nThese keys are not recommended, but are included for new users less familiar with modal editors.\n\nKey\tDescription\tCommand\nUp\tMove to previous line\tmove_line_up\nDown\tMove to next line\tmove_line_down\nLeft\tBackward a char\tmove_char_left\nRight\tForward a char\tmove_char_right\nPageUp\tMove one page up\tpage_up\nPageDown\tMove one page down\tpage_down\nHome\tMove to line start\tgoto_line_start\nEnd\tMove to line end\tgoto_line_end_newline\n\nAs you become more comfortable with modal editing, you may want to disable some insert mode bindings. You can do this by editing your config.toml file.\n\n[keys.insert]\nup = \"no_op\"\ndown = \"no_op\"\nleft = \"no_op\"\nright = \"no_op\"\npageup = \"no_op\"\npagedown = \"no_op\"\nhome = \"no_op\"\nend = \"no_op\"\n\nSelect / extend mode\n\nAccessed by typing v in normal mode.\n\nSelect mode echoes Normal mode, but changes any movements to extend selections rather than replace them. Goto motions are also changed to extend, so that vgl, for example, extends the selection to the end of the line.\n\nSearch is also affected. By default, n and N will remove the current selection and select the next instance of the search term. Toggling this mode before pressing n or N makes it possible to keep the current selection. Toggling it on and off during your iterative searching allows you to selectively add search terms to your selections.\n\nPicker\n\nKeys to use within picker. Remapping currently not supported. See the documentation page on pickers for more info. Prompt keybinds also work in pickers, except where they conflict with picker keybinds.\n\nKey\tDescription\nShift-Tab, Up, Ctrl-p\tPrevious entry\nTab, Down, Ctrl-n\tNext entry\nPageUp, Ctrl-u\tPage up\nPageDown, Ctrl-d\tPage down\nHome\tGo to first entry\nEnd\tGo to last entry\nEnter\tOpen selected\nAlt-Enter\tOpen selected in the background without closing the picker\nCtrl-s\tOpen horizontally\nCtrl-v\tOpen vertically\nCtrl-t\tToggle preview\nEscape, Ctrl-c\tClose picker\nPrompt\n\nKeys to use within prompt, Remapping currently not supported.\n\nKey\tDescription\nEscape, Ctrl-c\tClose prompt\nAlt-b, Ctrl-Left\tBackward a word\nCtrl-b, Left\tBackward a char\nAlt-f, Ctrl-Right\tForward a word\nCtrl-f, Right\tForward a char\nCtrl-e, End\tMove prompt end\nCtrl-a, Home\tMove prompt start\nCtrl-w, Alt-Backspace, Ctrl-Backspace\tDelete previous word\nAlt-d, Alt-Delete, Ctrl-Delete\tDelete next word\nCtrl-u\tDelete to start of line\nCtrl-k\tDelete to end of line\nBackspace, Ctrl-h, Shift-Backspace\tDelete previous char\nDelete, Ctrl-d\tDelete next char\nCtrl-s\tInsert a word under doc cursor, may be changed to Ctrl-r Ctrl-w later\nCtrl-p, Up\tSelect previous history\nCtrl-n, Down\tSelect next history\nCtrl-r\tInsert the content of the register selected by following input char\nTab\tSelect next completion item\nBackTab\tSelect previous completion item\nEnter\tOpen selected",
+  "title": "Keymap"
+}
