@@ -1,0 +1,16 @@
+{
+  "name": "helix-lab-zh",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "smol-toml": "^1.9.1",
+    "vite": "^7.2.2"
+  }
+}
