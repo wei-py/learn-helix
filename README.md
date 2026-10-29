@@ -13,49 +13,57 @@
 - 文章是选题依据，当前键位与命令语义仍以固定 Helix 25.07.1 为准。纠正原文 `:totur` 为 `:tutor`，不采用存在版本差异的 `vgl` 示例；picker / prompt 使用各自的键表，不套用编辑模式自定义键位。
 - LSP、Tree-sitter、文件、窗口及 shell 等依赖原生环境的内容只出知识题，不伪装成网页已执行。
 
-## 报纸式阅读界面
+## 统一的报纸式界面
 
-「Helix 练习报」保留 Helix 练习场的全部学习功能，以暖白报纸、墨黑文字、少量赭红强调色重新排版：通栏报头、课程索引、分栏指导与细线栏目层级，替代圆角卡片仪表盘。现有 36 课、38 道文章题、671 个默认叶绑定与 394 个命令；原有课程和目录进度保留。
+与相邻 `herdr` 统一暖纸色、细线分栏、本地字体和组件：顶部导航、自由选课地图、中央编辑区与右侧指导栏。**网站不再有左侧课程栏或课程抽屉**；窄屏把指导移到操作区之后。
 
-编辑区采用浅纸色等宽排版，反白区域标示选区，赭红标示主选区或插入点；目标预览使用相同规则。目录搜索与分页、按键回忆、参数表单、键位设置及配置导出统一为报纸式控件。窄屏改为单栏与可收起课程索引，保留键盘焦点、Tab 导航、触屏输入和减少动态效果偏好。
+课程地图按文章章节组织，分类筛选放在地图顶部。整卡可点击或使用 Tab / Enter，展示编号、任务、当前课与完成状态；全部 36 课直接开放，不要求前置通关、速度或正确率。继续练习、下一课、查看答案和带确认的进度重置仍保留。
 
-标题使用本地宋体 / CJK 衬线字体栈，正文与代码使用系统字体；不加载外部字体服务。
-
-入口为「关卡 / 目录 / 文章回忆」和「键位 / 导出 / 帮助」。首页关卡地图按文章章节分组，整张卡片可点击或用 Tab / Enter 进入；展示题目、任务简介、步数、当前课与完成状态。全部 36 课直接开放，不要求前置通关、速度或正确率；已完成课程可重复练习。侧栏分类筛选地图，练习页保留快速切课列表、「返回关卡地图」与下一课；地图提供继续当前课。原理、写法和范围说明按需展开。
+正文为 14px / 1.65 系统无衬线，标题使用本地宋体，英文报头使用 Georgia，代码使用系统等宽字体。不加载外部字体；编辑区保留反白选区、赭红主光标和虚拟 EOF。
 
 ### 滚动与导航
 
-- `index.html` 是页面 Layout：持久的 `#scroll-root` 包住 `#app`，仅该容器负责整页纵向滚动。`body` 不滚动，`main` 和业务区不创建第二个页面滚动条；桌面 36 课侧栏随页面正常流动。
-- `src/navigation.js` 是轻量原生 Router：轨道、课程和回忆题写入浏览器历史；搜索、筛选和分页替换当前条目，不按每次输入堆积历史。普通进入置顶；目录「返回目录」和浏览器后退 / 前进恢复对应条目的筛选、页码和位置。每个历史条目用 `crypto.getRandomValues` 生成 128 位随机标识，兼容局域网 HTTP；刷新保留历史上下文，但滚动缓存不跨文档保存，未知旧条目位置为顶部，不会复用其他条目的位置。
-- `src/scroll.js` 集中提供 `remember / restore / top / scrollTo / scrollToAnchor / observe / setOverlay / dispose`。位置仅在内存保留最近 80 个条目，不写入 localStorage。普通重绘保持原位置，只在内容确实缩短时由容器自然钳制。滚动订阅使用 passive + requestAnimationFrame 合并，并返回清理函数；路由退出清理局部列表、抽屉监听和测量缓存，文档退出清理 Router / 管理器。
-- 设置、帮助和导出使用独立的有界原生 Dialog；窄屏课程索引是独立抽屉。覆盖层同时锁住 body 和页面根滚动，关闭还原打开前的 overflow 与位置。抽屉禁用背景焦点、约束 Tab 并支持 Esc。顶栏 sticky 的祖先是页面根容器。
-- **应用记录列表超过 80 项必须使用共享虚拟列表** `src/virtual-list.js`；设置 normal / select 各 322 项按可见范围加 3 行 overscan 渲染，而非隐藏整个 DOM。设置 Dialog 本身是唯一纵向视口，列表仅包含行与占位间距，不再嵌套纵向滚动。ResizeObserver 测量实际高度，最多 1000 项的弹窗生命周期缓存跨输入重绘保留；可见区上方尺寸变化补偿位置，当前聚焦行单独保留，Tab 可跨未挂载行。关闭 / 导航断开观察器与监听并清空缓存。目录每页 24 项、课程最多 36 项低于阈值；原生 select / datalist 的选项属于输入元数据，不是额外业务滚动列表。
-- 编辑器、目标预览、来源代码和导出预览有明确高度上限与局部代码溢出；弹窗 / 抽屉 / 局部内容使用 overscroll 边界，移动滚动启用 momentum。正文锚点统一经管理器处理，设置 `scroll-margin-top: 84px` 避让顶栏；仅锚点与返回顶部可平滑滚动，并尊重 reduced-motion。返回顶部在 600px 后显示，`z-index: 200`，不抢键盘焦点。
-- 当前没有表格、固定表头 / 列、图片、异步请求或 skeleton；相关条件项不适用，不新增空表格组件、图片占位或虚假网络状态。错误参数仍由真实编辑引擎报告，保持当前页面上下文。桌面模拟不能证明真机 iOS / Android 惯性；29 条适用性及实测边界见 [验收记录](docs/minimal-scroll-qa.md)。
+- 共享 `LearningShell` 在固定视口壳内定义唯一 `#scroll-root`；body 和 main 不建立第二个页面滚动区。根可键盘聚焦，PageDown 只移动根。
+- Vue Router 与 `src/router/scroll.js` 集中管理导航。普通进入置顶；地图/目录返回保留筛选、分页和位置；后退/前进按独立历史项恢复，不把同 URL 的多个条目合并。
+- 回忆题的新一轮作答不继承旧答案；只有浏览器历史遍历恢复对应条目的作答和答案展开草稿。草稿与位置均为有界内存缓存，不写入 localStorage。
+- `src/shared/composables/useLearningScroll.js` 统一位置保存、双轴恢复、锚点、rAF 采样、减少动态效果与覆盖层锁定；正文锚点使用顶栏偏移。返回顶部超过 320px 出现，层级 200；顶部导航为 300，Dialog 为 1200。
+- BaseDialog 独立滚动，打开时锁住背景；关闭精确恢复 overflow 声明、priority、位置与焦点。当前没有课程 Drawer。
+- 超过 80 项的应用列表必须复用共享 `VirtualList.vue`。设置页普通/选择模式各 322 行，仅挂载窗口和 overscan；固定行高 160px、视口 448px，长命令/错误有局部可聚焦边界。共享 hooks 负责 passive+rAF、稳定键、焦点保留、跨行键盘导航与卸载清理。
+- 代码、预览和大列表允许有界局部滚动，不允许页面横向溢出。没有表格、图片、请求型数据或异步课程加载，不新增空组件、Axios/API SDK 或虚假 Skeleton/Loading；筛选无结果有明确空态与恢复指引。
 
-最新验收包含目录往返上下文、末行连续输入、覆盖层锁定、窄屏局部溢出与真实局域网 HTTP 导航。性能样本出现一条 78ms self long task，无法区分应用工作与自动化开销；不能据此宣称零长任务或性能认证，不为消除未知归因而修改编辑校验语义。
+完整适用性、实测和限制见 [布局与滚动验收](docs/minimal-scroll-qa.md)。
+
+## 技术栈与源码规范
+
+- Vue 3 + JavaScript、Pinia、Vue Router；Vite+ 与 pnpm 统一开发、构建和预览。
+- TailwindCSS；UnoCSS 仅启用 `presetIcons`，所有图标使用 Carbon 静态 `i-carbon-*` 类。
+- xe-utils 用于跨业务工具，vue-hooks-plus 用于复用 DOM/虚拟列表交互。日期操作统一使用 dayjs；当前无日期计算，不制造日期功能。
+- `src/shared/` 与 Herdr 保持同源镜像：BaseButton、BaseDialog、LearningShell、CourseMap、StudyGuide、VirtualList、类型与设计令牌。两仓库独立部署，不使用跨仓库相对依赖；变更共享实现必须同步另一份。
+- 业务 feature 不互相导入；全局状态集中在 `stores/`，跨业务纯逻辑放在 `domain/`，类型集中定义。
+- 全部 JS / Vue 脚本变量、函数、方法和回调使用中文 JSDoc。ESLint + `@antfu/eslint-config`、`eslint-plugin-jsdoc` 和声明覆盖规则检查具体类型、中文职责、参数名/返回值、合法标签、类型语法和导入顺序，CI 不跳过。不使用 TypeScript 源文件。
 
 ## 本地运行
 
-需要 Node.js 22.12+（或 20.19+）与 npm。
+需要 Node.js **24.15+（24.x）或 26+** 与 **pnpm 12.5.1**；CI 固定使用 Node.js 24.15.0。
 
 ```sh
-npm install
-npm run dev
-npm test
-npm run build
-npm run preview
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm lint
+pnpm test
+pnpm build
+pnpm preview
 ```
 
-打开 Vite 打印的 Local 地址；当前保留的开发服务为 **http://localhost:5174/**。开发服务器绑定 `0.0.0.0`；同一局域网可使用打印的 Network 地址。
+开发地址为 **http://localhost:5174/**，生产预览为 **http://localhost:4174/**。服务绑定 `0.0.0.0`，同一局域网可访问打印的 Network 地址；端口冲突会明确失败，不悄悄切换。
 
-应用仍为静态站点，没有后端、账户、数据库或常驻原生编辑器进程。构建产物在 `dist/`，可静态部署。源码运行时是原生 ES modules 与 DOM；Vite 提供开发与构建工具。
+应用仍为静态站点，没有后端、账户、数据库或常驻原生编辑器进程。运行界面是原生 Vue 模板与 Pinia，不保留旧 `innerHTML` 渲染器。构建产物在 `dist/`，资源采用相对路径。
 
 ### GitHub Pages 发布
 
-仓库 Settings → Pages → Source 选择 **GitHub Actions**。将代码及 `.github/workflows/deploy.yml` 推送到 `main` 后，工作流会安装依赖、构建并发布 `dist/`；也可在 Actions 页面手动触发。
+仓库 Settings → Pages → Source 选择 **GitHub Actions**。推送到 `main` 后，工作流依次执行冻结依赖安装、`pnpm lint`、`pnpm test`、`pnpm build`，再部署 `dist/`。**不需要 git tag**；也可以手动触发工作流。Pull Request 只检查，不部署。
 
-构建使用 Pages 提供的 `base_path`，兼容仓库子路径与用户主页。部署成功后，在 Settings → Pages 查看访问地址；后续推送到 `main` 会自动更新。
+相对资源路径与 Hash 路由兼容 Pages 仓库子目录；后续推送到 `main` 自动更新。只有线上工作流实际成功后才算已发布，本地构建不冒充线上部署。
 
 ## 三条学习轨道，三个不同的覆盖口径
 
@@ -103,7 +111,7 @@ npm run preview
 
 普通 / 选择模式可直接键入数字前缀；触屏也有「下一条命令计数」输入框。没有输入计数与显式输入计数会正确区分，例如内容轮换的默认整组选区行为。参数表单的计数仍需用户决定。
 
-插入模式可直接输入，也可用「触屏 / 中文输入」文字表单或粘贴。物理键盘与屏幕命令共用 `src/practice-input.js` 的匹配状态：只有尚未完成的自定义前缀保留待续按键，已匹配命令在执行前即消费序列；Backspace、Enter、Ctrl+h 后继续输入不会把字符接到旧命令后。有效映射优先于普通文字 / 数字计数，已移走的旧键不会通过硬编码退格或退出回退重新生效。Tab / Shift+Tab 始终保留网页焦点导航；对应编辑器操作可通过屏幕输入途径使用。Esc 优先匹配当前模式配置，未匹配时可取消未完成前缀；参数表单可点「取消」。
+插入模式可直接输入，也可用「触屏 / 中文输入」文字表单或粘贴。物理键盘与屏幕命令共用 `src/domain/practice-input.js` 的匹配状态：只有尚未完成的自定义前缀保留待续按键，已匹配命令在执行前即消费序列；Backspace、Enter、Ctrl+h 后继续输入不会把字符接到旧命令后。有效映射优先于普通文字 / 数字计数，已移走的旧键不会通过硬编码退格或退出回退重新生效。Tab / Shift+Tab 始终保留网页焦点导航；对应编辑器操作可通过屏幕输入途径使用。Esc 优先匹配当前模式配置，未匹配时可取消未完成前缀；参数表单可点「取消」。
 
 macOS 的 Option 等同 Alt。练习编辑区与按键回忆共用 `keyFromEvent`：当 Option 产生 `å / ß / ∂ / ƒ` 等非 ASCII 字符或 `Dead` 死键时，按 `KeyboardEvent.code` 恢复 US / ABC 对应键位，再匹配 `A-a / A-s / A-d / A-f`；保留 Shift / CapsLock 的字母大小写，以及数字、标点的 Shift 符号。仅在 macOS、按住 Option 且主键被转换时恢复，不把其他布局已提供的 ASCII 逻辑键强制改成物理键。不承诺恢复任意非 US 布局的 Option 符号；不认识的物理键保持原有处理。搜索、参数及文字输入框不拦截 Option 输入；需要在练习中输入这些字符时可用文字表单或粘贴。此修复不修改终端的 Option / Meta 配置。
 
@@ -155,7 +163,7 @@ macOS 的 Option 等同 Alt。练习编辑区与按键回忆共用 `keyFromEvent
 
 ## 诚实的边界与原生学习路径
 
-- 真实挑战是明确支持的训练引擎，不是完整 Helix。支持集见 `ADVANCED_COMMANDS`；不支持的操作明确报错，不会只回显按键或当作已执行。
+- 真实挑战是明确支持的训练引擎，不是完整 Helix。支持集由 `src/domain/advanced.js` 的 `supportsCommand()` 判定；不支持的操作明确报错，不会只回显按键或当作已执行。
 - 文本索引采用 UTF-16 inclusive 选区，不是完整 Unicode 字素 / rope 模型；不保证任意 emoji、组合字符、终端协议与原生一致。训练编辑区无软换行。
 - 正则为 JavaScript Unicode 与 Rust regex 的常用交集；不支持环视、反向引用、零宽匹配及 Rust 专用语法。文本对象是词 / 简单括号 / 引号的词法规则，不解析 Tree-sitter，也不会忽略所有字符串内括号。
 - 缩进训练为两个空格一级，寄存器不访问系统剪贴板；不是完整项目配置或所有寄存器类型的模拟。
@@ -165,17 +173,20 @@ macOS 的 Option 等同 Alt。练习编辑区与按键回忆共用 `keyFromEvent
 
 ## 结构与证据
 
-- `src/catalog.js`：固定版本权威全集、来源与计数；`src/catalog-zh.js`：394 项中文学习含义。
-- `src/article.js`：指定文章、章节顺序、课程对应、独立场景 / 理解题及文章题库推进。
-- `src/bindings.js`：全目录绑定、键语法、别名优先级、冲突、旧设置迁移、TOML 导出。
-- `src/engine.js`：基础引擎、按文章组合课程、目标比较与版本化保存；`src/advanced.js`：多选编辑事务、真实参数、寄存器、历史、宏及 25 个独立目标。
-- `src/practice-input.js`：练习按键序列、计数、取消与文字回退的共享转换，以及仍可修正的文字步骤进度。
-- `src/catalog-ui.js`：搜索目录、全量设置、命令知识与按键回忆；`src/main.js`：交互与参数收集；`src/style.css`：保留原响应式设计并扩展目录界面。
-- `tests/app.test.js`、`tests/advanced.test.js` 与 `tests/practice-input.test.js`：目录全集、配置 / 迁移、原生语义回归、错误参数、多选与课程端到端状态；输入回归直接执行主界面使用的转换，再交给真实引擎验证多插入点、纠错和撤销，不用回声式假引擎。
+- `src/main.js`、`src/App.vue`：Vue、Pinia、Vue Router 入口与应用协调。
+- `src/features/`：课程、真实编辑器、目录、回忆与设置业务组件。
+- `src/stores/`：全局学习状态、表单、进度、键位草稿与共享业务类型。
+- `src/domain/catalog-data.json`、`catalog-zh-data.json`：无损保留固定版本全集与中文释义；对应 JS 模块提供领域契约。
+- `src/domain/article.js`、`bindings.js`：文章章节和题库、完整键位语法、别名、冲突、迁移与 TOML 导出。
+- `src/domain/engine.js`、`advanced.js`：基础和多选编辑事务、参数、寄存器、历史、宏、独立目标与版本化保存。
+- `src/domain/practice-input.js`、`lesson-answer.js`、`recall.js`：真实输入转换、可继续修正的文字步骤、只读答案和回忆模型。
+- `src/router/scroll.js`、`src/shared/`：历史项策略、Base / Layout / Business 组件、滚动、虚拟列表与统一设计令牌。
+- `tooling/declaration-documentation.js`：所有声明及回调的中文 JSDoc 检查。
+- 保留领域回归直接执行真实输入解析器和引擎，不使用回声式假引擎。旧字符串渲染器与旧 DOM 滚动/路由实现的专属测试已删除。
 
-文章题库切换后执行 **91 项 Node 测试全部通过**；Vite 7.3.7 生产构建成功（16 模块，176ms）。共享答案执行回归覆盖全部课程；新增回归检查跳题、已掌握过滤、末尾 / 全部完成回绕及文章进度与旧记录共同恢复。
+当前 `pnpm lint`、`pnpm build` 通过；**83 项 Node 测试通过，无失败或跳过**。覆盖完整键位/导出、迁移、参数、计数、多选区、宏、历史、输入纠错及按独立目标执行全部课程答案。中文文档规则另用缺类型、漏回调、非法标签、损坏类型、英文说明和参数名错误等负例验证。
 
-BrowserOS neo 实际验证文章理解 / 命令答题、错误答案拒绝、答案解析、下一题和刷新后进度；用键盘与真实参数表单完成两道新增环绕课，分别得到 `[use] + [use]` 和 `[([abc])]`。1920px 桌面及 390px 窄屏检查无页面横向溢出，窄屏实际答题通过。使用独立的 localhost:5182 验证来源，已移除本次验证生成的应用记录并清除设备模拟；没有修改线上站点的存储，也未声称重新手动通关全部课程。
+BrowserOS neo 在生产预览实际完成全部 **36 课和 38 道文章题**，通过屏幕按键、文字/参数表单和真实状态检查，不直接注入目标状态。另验证物理 `dx → Backspace → og → x → Backspace → Esc` 多插入点纠错、错误正则不推进、有效错误参数真实改变选区、答案只读、可选寄存器不强制弹表单、`F6 h` 改键/提示/回忆/导出联动、未绑定命令新增/删除、虚拟末行编辑、列表恢复与 v1→v2 迁移。实际 TOML 下载经解析器核验后删除验收文件；预览记录已还原，原开发站记录未修改。1440/768/390px 布局已检查；真机惯性、软键盘、任意输入法与长期性能不作已验证声明。最新证据见 [布局与滚动验收](docs/minimal-scroll-qa.md)。
 
 旧 34 课、改键 / 迁移 / 移动端、真实 hx 导出 / 执行的历史证据见 [QA 报告](docs/qa-report.md)；旧编号第 12 课的插入管线记录见 [插入模式验收](docs/insert-input-qa.md)。固定源数据、校验与上游许可说明见 [完整覆盖研究](docs/helix-coverage-research.md)，原始证据在 `docs/research/`。
 

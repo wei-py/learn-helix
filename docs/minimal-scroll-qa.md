@@ -1,67 +1,100 @@
-# Minimal newspaper and scroll QA
+# 无侧栏布局与滚动验收
 
-## Scope
+## 范围与方法
 
-BrowserOS neo, isolated QA tab **27**, `http://localhost:5174/`, desktop **1440×1000** and mobile emulation **390×844**. Final behavior exercised after implementation freeze; a formatter-triggered reload interrupted one settings sequence, which was reopened before remaining checks. No application source/tests changed by QA. No build/test/lint runs performed by QA.
+Vue 3 JavaScript + Pinia 原生组件替换旧字符串界面，与相邻 Herdr 同步字体、纸色令牌、Base / Layout / Business 组件、布局和滚动 hooks。网站只保留顶部导航、自由课程地图、中央编辑区和右侧指导；窄屏指导移到练习之后，无左侧课程栏/抽屉。
 
-Storage baseline: exact `helix-lab-v1` value was **null**. Settings save was exercised, then only that key was removed to restore its original absence, followed by reload. No broad storage clear. Other agents' tabs were not modified. Mobile emulation is not a physical iOS/Android inertia test.
+BrowserOS neo 在生产预览 `http://localhost:4174/` 实际点击、键入、填写参数和检查编辑状态；不注入目标答案或伪造成功。领域测试补充确定性边界，不能替代真实表面验收。历史旧界面的验收不作为当前版本证据。
 
-## Copy audit and visual result
+## 学习、数据与键位
 
-Baseline repeated masthead/edition/intro/progress/footer slogans, local-save metadata and catalog/recall scope lectures were identified before implementation. Final screenshots show a single newspaper masthead, compact navigation, lesson-specific description, actual editor, actionable steps and collapsed explanatory details. Essential operand behavior, keyboard Tab guidance and export backup/merge/no_op/sticky limitations remain. Desktop sidebar deliberately remains normal flow: pinning all34 lessons in a second page scroller is not the approved architecture. Rule8 applies to the actual sticky topbar; the modal footer remains normal flow within its dialog, not sticky.
+| 场景 | 实测结果 |
+| --- | --- |
+| 全部课程 | 实际完成 36/36，覆盖 189 个公开答案操作；使用真实屏幕按键、参数/计数/寄存器表单及文字输入，不直接注入状态 |
+| 全部文章题 | 实际完成 38/38；错误或查看答案不计掌握，目录命令回忆不混入文章进度分母 |
+| 参数失败 | 物理 `% s [ Enter` 显示正则错误且停留 1/5；有效但错误的 `ca` 真正选择 `cacaca`，不被自动改成正确参数 |
+| 插入纠错 | 实际 `d x Backspace o g x Backspace Escape` 得到 `dog + dog = dog`，5/5；不是重置为固定文本 |
+| 可选寄存器 | `c` 可直接进入 INSERT，不强制弹出寄存器表单 |
+| 只读答案 | 展开答案前后编辑器与步骤计数不变，仍显示目标预览 |
+| 自定义映射 | normal.right 改为 `F6 h` 后，旧 `l` 不推进，真实 F6+h 两次完成 2/2；屏幕提示、按键回忆和导出同步 |
+| 冲突与未绑定命令 | right=h 显示 invalid 且禁保存；未绑定 move_prev_word_end 加到 F7、保存，再删除保存，既有课程进度仍保留 |
+| 真实导出 | 实际下载 TOML，用解析器检查 normal.F6.h、normal.l=no_op、normal.F24.z；验收文件删除，原用户同名文件不变 |
+| 旧进度 | v1 记录自定义 g h、h、C-h 和含无效 ID 的完成列表；有效项显示 1/36，真实 g h 可执行，再完成一课后保存为 v2 且键位保留 |
+| 重置 | 取消确认不改序列化记录；确认后课程与知识计数清零 |
+| 无门槛选课 | 验收结束恢复预览原始无记录后为 0/36、0/38，36 张卡片无 disabled，最后一课也可直接进入 |
 
-## 29-rule evidence matrix
+## 滚动、历史与覆盖层
 
-**Browser** means directly exercised below; **source** means inspected implementation, not an unperformed runtime proof. Conditional absent surfaces are N/A, not placeholder implementations.
+| 场景 | 实测结果 |
+| --- | --- |
+| 地图返回 | 900px → 实操默认 0 → 界面返回 900px，选中卡恢复焦点 |
+| 同 URL 历史 | 相同地图 URL 的旧 900px、新 400px 条目通过后退/前进各自恢复，不共享 URL 缓存 |
+| 目录上下文 | q=move、普通模式、第 2 页（URL page=1）、1200px → 回忆 → 返回，筛选/分页/地址与 1200px 保留；原生后退亦保留 |
+| 普通回忆与历史 | 浏览器历史返回保留该条目正确反馈；重新进入同题的新一轮反馈为空，历史项键不同 |
+| 背景锁定 | 根 400px 打开设置时不可背景滚动；关闭后恢复 400px 和原 `overflow: clip !important`、根 `overflow-y: auto !important` |
+| 原生键盘 | 根 PageDown 到 811px、window 仍为 0；focus outline 2px/-3px；编辑器 Tab 离开编辑区且步骤仍 0/2 |
+| 返回顶部 | z-200、阈值 320px；减少动态效果媒体仿真下立即归零并把焦点交还根 |
+| 局域网 | 非安全 HTTP、randomUUID 不可用时仍用 getRandomValues 创建 32 位历史项键；剪贴板受限时提供复制/下载指引 |
 
-| # | Rule | Applicability / final evidence |
-|---|---|---|
-| 1 | Single primary page scroll container | **Browser + source.** `#scroll-root` height1000, overflow:auto; body/window scroll0; main overflow:visible, not independent scrolling. Local editor/dialog/drawer are bounded exceptions. |
-| 2 | Router owns page scrolling; no component window.scrollTo | **Source.** `navigation.js` centralizes push/pop/save/restore through `scroll.js`; component navigation calls the manager. Manager calls root.scrollTo, not window.scrollTo. |
-| 3 | List back restores context; ordinary entry starts top | **Browser.** Catalog query`move`, mode`normal`, page2/2, root1200 → recall0 → UI return restores all four; repeated with native browser Back, same result. Ordinary practice entry0. Reload followed by unknown prior entry restored query/mode/page but position0, not an unrelated cached offset. |
-| 4 | Layout declares scroll-root | **Source + browser.** Persistent `#scroll-root` wraps application content; `style.css` gives100dvh. Main replacement does not replace that root. |
-| 5 | Height-bounded local scroll-section | **Source + browser.** Editor max60dvh, preview max50dvh, modal max90dvh; mobile drawer observed height844 at viewport844. Long code remained within editor. |
-| 6 | Modal/Drawer independent scrolling | **Browser.** Dialog reached final settings row at scroll48626 without moving root800; mobile drawer PageDown moved its own scroll while root350 stayed fixed. No nested settings-list viewport: dialog is the virtual viewport. |
-| 7 | Overlay locks body/background and restores on close | **Browser.** Modal root/body overflow hidden; backdrop wheel plus PageDown left root800, body/window0. Prior inline body overflow`clip` restored after save/close with root800. Mobile drawer locked root350; Escape restored350 and original empty inline overflow. |
-| 8 | Sticky uses correct scroll ancestor | **Browser + source.** Actual sticky topbar top0 at root250. The normal-flow, non-sticky modal footer bottom816.28 stayed inside dialog bottom818.67. Desktop sidebar is intentionally static normal flow, not a failed sticky element. |
-| 9 | Table horizontal scroll remains local/unified | **N/A.** No tables. Catalog is paginated articles; no fake table added. |
-| 10 | Table fixed columns/headers use component configuration | **N/A.** No table component/fixed table columns or headers. |
-| 11 | Above-threshold large lists virtualized | **Browser + source.** Shared threshold80;322 normal settings rows,13 initially mounted,9 at desktop final row321,6 at mobile final row321. Catalog remains24/page. |
-| 12 | Central scroll subscription manager/hook | **Source.** `createScrollManager.observe` owns passive subscription registration/disposal. Backtop and virtual list consume it. |
-| 13 | Scroll listeners throttled/RAF | **Source.** Manager permits one pending requestAnimationFrame per observer; disposal removes listener and cancels pending frame. Browser scroll-driven virtual rows/backtop updated. |
-| 14 | Smooth scrolling only anchors/backtop | **Source + browser.** Manager defaults instant; router entry/restore instant. Skip anchor and backtop request smooth; catalog pagination anchor explicitly false. |
-| 15 | Reduced-motion disables scrolling animation | **Browser + source.** CDP prefers-reduced-motion:reduce; backtop went to0, skip anchor landed immediately at intended offset. Manager selects instant when media query matches; CSS disables reduced-motion transitions. |
-| 16 | Unified scrollToAnchor; no business scrollIntoView | **Browser + source.** Actual skip-link path invokes manager, focuses main; pagination also calls manager. No business scrollIntoView path. |
-| 17 | scroll-margin-top includes fixed navigation | **Browser.** Main margin84px; skip anchor resulted main top84.4375, root82, focus`main-content`. |
-| 18 | Backtop local-floating z200 and threshold | **Browser.** Hidden at599; visible at700; computed z-index200; click reached0 and focuses root. |
-| 19 | No page horizontal overflow | **Browser.** Mobile root client/scroll width390/390 even with700-character inserted line; editor client/scroll width356/6020. Mobile dialog352/352. Main remained overflow:visible. |
-| 20 | iOS/Android touch momentum | **Source + emulated geometry only.** Root/editor/modal/drawer use native overflow with touch momentum/overscroll policy. Physical touch inertia was not exercised; no claim of real-device verification. |
-| 21 | Stable skeleton/image/async heights to avoid CLS | **N/A to absent surfaces.** Static app has no skeleton/image/network-async content. Existing input/rerender stability is covered by22; no fake async components. |
-| 22 | Data refresh preserves context | **Browser.** Final measured virtual row stayed visible through F→F2→F24 rerenders, caret1/2/3; dialog scroll48626 and input top513.640625 unchanged. Invalid regex operand preserved root400.700-character insertion preserved root250. Catalog context returned as in3. |
-| 23 | Request failure preserves scroll and existing data | **N/A.** No request-backed data surface. Real local operand error was tested under22, not mislabeled as network-failure coverage. |
-| 24 | Images have explicit dimensions/aspect ratio | **N/A.** No images in app. Evidence screenshots are documentation, not app image surfaces. |
-| 25 | Shared virtualization abstraction | **Source + browser.** `virtual-list.js` owns range, overscan, measurement, focus pinning, keyboard boundary handling and cleanup; `main.js` mounts it for settings.321st zero-based row reachable in both viewports. |
-| 26 | Manager scroll state; no localStorage scrollTop | **Source.** Scroll positions live in manager Map (limit80); navigation context in history. Persistent app payload remains bindings/progress, not scroll positions. Reload behavior confirmed memory-only offsets. |
-| 27 | Avoid blocking large computations; profile if necessary | **Source + measured caveat.** Bounded mounted rows and RAF subscriptions reduce scroll/render work. A narrow PerformanceObserver sample over settings open/close recorded **one78ms self long task**. This does not identify application versus browser/tool overhead; no zero-longtask or complete performance-pass claim is made. |
-| 28 | Keyboard scrolling and visible focus | **Browser.** Editor Tab escaped to focus control with solid outline. Root PageDown advanced scroll with body0. Drawer opens focused on close button, workspace inert; Escape restores menu focus, hidden drawer inert. Last-row edited input retained visible outline/caret. |
-| 29 | Route-leave cleanup for listeners/cache/events | **Source.** Before navigation disposes virtual list, clears measurement cache, cleans drawer and unlocks overlay; virtual dispose disconnects ResizeObserver, removes keydown/scroll observer and clears nodes. Manager positions bounded80, measured cache1000; pagehide disposes navigation/manager and media listener. Not a heap-leak soak test. |
+## 大列表与空态
 
-## Representative retained behavior
+普通模式 322 行，设置视口固定 448px、行高 160px。初始挂载约 9–10 行，末端仅 8 行；不创建 322 个表单节点。
 
-- Basic lesson: real keyboard `l` moved right and advanced feedback; editor focus retained.
-- Advanced lesson: select-all then select-regex with `[` produced genuine invalid-regex error, not fabricated success; root400 preserved.
-- Settings: final row `normal.decrement` changed toF24; search`decrement` returned one row and preserved draft. Save persisted; reopening showedF24; reset draft showedC-x. Export textarea includedF24 with full essential safety warning. No download or clipboard mutation was needed.
-- Far-end measurement regression independently used final row321, not the implementation author's index200. Desktop mounted indices313–321; each typed character preserved visible input top513.640625, caret and scroll48626. Mobile unfiltered last row also reachable with6 mounted rows.
-- UI/native list back and reload behavior are described in3. No complete34-lesson/671-binding manual rerun was performed.
+- End 实际抵达原始索引 321；最后一项输入 F24 后追加 ` z`，输入框 top 保持 772.578125px、caret=5、焦点身份、根 400px 和列表 51072px 不变。保存后进度仍为 36。
+- 末行焦点在索引 321 时，真实向上滚轮回到列表 0px；窗口加保留行共 11 个，索引 320 尚未挂载。Shift+Tab 实际挂载并聚焦 320，列表回到末端，主根仍为 0；不是将焦点丢到页面外。
+- 设置筛选无结果有独立空态，不保留空白 448px 视口；清空搜索等待真实行后，322 项恢复、挂载 10 行。目录空态隐藏无效分页并提示清空搜索/调整分组。
+- 手机末行行框、输入和帮助均在 160px 行内；取消草稿 F24y 后仍为保存值 F24z。
 
-## Screenshots (saved, opened and visually inspected)
+## 响应式与视觉
 
-- [Desktop1440×1000](research/minimal-scroll-desktop.png): newspaper masthead, normal-flow course list, editor and concise guide, no redundant hero slogans.
-- [Mobile390×844](research/minimal-scroll-mobile.png): contained single-column layout, compact toolbar, readable lesson/editor, no horizontal page overflow.
-- [Settings final row](research/minimal-scroll-settings-lastrow.png): real final decrement row visibly focused withF24, add-binding area and footer reachable within modal.
+| CSS 视口 | 根 clientWidth / scrollWidth | 地图列数 |
+| --- | --- | --- |
+| 1440 × 1000 | 1425 / 1425 | 3 |
+| 768 × 1024 | 753 / 753 | 2 |
+| 390 × 844 | 375 / 375 | 1 |
 
-## Limitations / handoff
+真实截图检查桌面地图/编辑器、手机编辑器/设置。手机 700 字符代码时局部编辑器 322px / 内容 6020px，主根仍 375/375；设置 Dialog 为 368/368。指导栏纵向排列。正文 14px / 1.65，宋体标题、Georgia 报头与 Herdr 相同；表单有可辨认边界，不靠背景差猜可编辑区域。
 
-No unresolved functional regression found in exercised frozen behavior. Static desktop sidebar is an intentional approved decision, not a bug. Physical iOS/Android inertia, heap-soak cleanup and attribution of the observed78ms long task remain outside these browser checks. Main owns final test/build verification.
+## 29 项滚动规范适用性
 
-Supplemental evidence **reported by implementation owner, not independently rerun by QA**: after the localhost freeze, a LAN HTTP key-generation compatibility fix was checked in its own BrowserOS tab28 at `http://192.168.3.21:5174/`. It observed `isSecureContext=false`, unavailable `crypto.randomUUID`, available `getRandomValues`, distinct128-bit navigation keys, and practice→library(top700,24cards)→recall(top0)→browser Back restoring library(top700,24cards) and its original key. No storage writes in that supplemental run.
+| 规范 | 当前实现与证据 |
+| --- | --- |
+| 单一主容器 | `LearningShell` 唯一 `#scroll-root`；body/main 不嵌套页面滚动。浏览器实测。 |
+| Router 统一管理 | Vue Router 与 `src/router/scroll.js` 处理进入/返回/历史，业务无 window.scrollTo。 |
+| 页面级恢复 | 按独立历史项键缓存，最多 80 项；地图/目录/同 URL 不同条目已实测。 |
+| 明确 scroll-root | Layout 定义根，业务不得创建新页面根。 |
+| scroll-section | 代码/导出/列表与长字段有明确高度或最大高度、边界和键盘入口。 |
+| Modal 独立滚动 | BaseDialog 独立内容区，设置/确认已实际操作；没有课程 Drawer。 |
+| 背景锁定 | 引用计数锁定，恢复原声明顺序、值、priority、坐标与焦点；浏览器验证。 |
+| Sticky 容器 | 顶栏在固定应用壳；指导栏绑定主根，窄屏改静态位置，避免额外 overflow 祖先。 |
+| 表格横滚 | 当前没有表格业务，不新增假 Table。 |
+| 表格固定 | 无固定表头/列需求，不手写模拟定位。 |
+| 大列表虚拟化 | 超过 80 项统一 VirtualList；322 项绑定列表已实际验证窗口化。 |
+| 统一 Hook | vue-hooks-plus 与 useLearningScroll 管理 DOM 生命周期，业务不散落页面监听。 |
+| 监听节流 | passive+rAF，取消待处理帧；虚拟窗口同样每帧最多更新一次。 |
+| 局部 smooth | 仅统一锚点/返回顶部允许；不设置全局 smooth。 |
+| 减少动画 | prefers-reduced-motion 分支已做浏览器媒体仿真。 |
+| 统一锚点 | 控制器统一处理，业务无 scrollIntoView。 |
+| Sticky 偏移 | scroll-margin-top 考虑顶部导航。 |
+| 返回顶部层级 | z-200、320px 阈值；已实测。 |
+| 禁止页面横滚 | 三种宽度根 clientWidth=scrollWidth；长代码仅编辑器局部横滚。 |
+| 移动端惯性 | 原生 touch 滚动和局部边界由 CSS 保留；没有实体 iOS/Android 惯性测试。 |
+| 高度稳定 | 同步课程/目录与固定虚拟行避免异步替换；没有量化 CLS 认证。 |
+| 刷新保上下文 | 统一 preserve 维护局部更新上下文；筛选/改键输入的焦点、caret、位置已实测；无网络刷新。 |
+| 请求失败上下文 | 无远端请求，故不制造 API/Toast/重试桩；领域存储失败由现有错误提示处理。 |
+| 图片预留 | 当前无内容图片，不创建图片占位。 |
+| 统一虚拟列表 | 只用共享组件和 vue-hooks-plus，不在 settings 业务重复实现窗口化。 |
+| 滚动状态持久化 | 滚动与回忆草稿在有界内存，不写 localStorage；原学习进度存储独立保留。 |
+| 滚动性能 | 有界节点/缓存、rAF/passive；未采样长期任务，不声称零长任务或内存绝对稳定。 |
+| 键盘无障碍 | 根/编辑器 Tab、PageDown、虚拟 End 和跨未挂载行 Shift+Tab、Dialog Escape/焦点恢复均已实测。 |
+| 离开清理 | onScopeDispose 清监听、帧、历史草稿、缓存与 scrollRestoration；源码检查。 |
+
+## 工程检查、清理与限制
+
+- `pnpm lint`、`pnpm test`、`pnpm build` 通过；83 项 Node 测试无失败或跳过。`pnpm install --frozen-lockfile --ignore-scripts` 成功。
+- 所有源码/测试/配置的 JS 与 Vue 声明、函数和回调检查中文 JSDoc，类型/标签/参数/返回值/导入顺序进 CI。负例会拒绝漏类型、漏回调、非法标签、错误类型语法、英文职责、错误参数名与宽泛 Object；合法中文与字符串字面量联合类型通过。
+- 不保留旧 innerHTML renderer、旧 DOM 路由/滚动或旧实现专属测试；静态同步站点不新增无业务 API、Skeleton、spinner 或错误中心。smol-toml 只服务测试，放在 devDependencies。
+- 原 `localhost:5174` 用户记录原样核对未变；4174 预览最初无记录，已删除本次验收生成记录并恢复无记录。只删除本次 TOML 下载，不删除原用户文件或原生配置。
+- 存储拒绝由领域测试覆盖。浏览器启动级 localStorage getter 故障注入因 CDP target_scope_unsupported 未运行，不把它记为浏览器成功验收。
+- 未进行实体手机惯性/软键盘、任意输入法、原生 hx 全命令重测或长期长任务/堆/CLS 认证。已有算法边界见 README。
+- 未执行 Git 提交/推送或 Pages 线上部署；当前结果是本地生产预览与工程检查。
