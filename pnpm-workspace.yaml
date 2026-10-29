@@ -1,0 +1,4 @@
+# 使用 Vite+ 官方核心别名，确保插件和内部工具解析到同一份构建器。
+overrides:
+  vite@*: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vitest@*: 5.0.5

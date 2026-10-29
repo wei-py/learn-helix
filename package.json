@@ -3,14 +3,37 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@12.5.1",
+  "engines": {
+    "node": "^24.15.0 || >=26.0.0"
+  },
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0",
+    "dev": "vp dev --host 0.0.0.0 --port 5174 --strictPort",
+    "build": "vp build",
+    "preview": "vp preview --host 0.0.0.0 --port 4174 --strictPort",
+    "lint": "eslint .",
     "test": "node --test"
   },
+  "dependencies": {
+    "vue": "3.5.44",
+    "pinia": "4.1.0",
+    "vue-router": "4.6.4",
+    "xe-utils": "4.1.4",
+    "dayjs": "1.11.23",
+    "vue-hooks-plus": "2.4.3"
+  },
   "devDependencies": {
-    "smol-toml": "^1.9.1",
-    "vite": "^7.2.2"
+    "vite-plus": "1.4.0",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0",
+    "@vitejs/plugin-vue": "6.0.10",
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "@unocss/vite": "66.12.0",
+    "@unocss/preset-icons": "66.12.0",
+    "@iconify-json/carbon": "1.2.29",
+    "eslint": "10.13.0",
+    "@antfu/eslint-config": "7.4.3",
+    "eslint-plugin-jsdoc": "65.4.2",
+    "smol-toml": "1.9.1"
   }
 }
