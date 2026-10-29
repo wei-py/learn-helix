@@ -53,6 +53,7 @@ let disposeVirtualList = () => {};
 const virtualHeights = new Map();
 let navigation;
 let libraryEntry = null;
+let mapEntry = null;
 let overlayTrigger = null;
 let drawerCleanup = () => {};
 const narrow = matchMedia("(max-width: 760px)");
@@ -81,7 +82,7 @@ const saved = loadSaved(storage, validateBindings, DEFAULT_BINDINGS);
 let bindings = saved.bindings;
 let completed = saved.completed;
 let knowledge = saved.knowledge || [];
-let track = "practice";
+let track = "map";
 let catalogQuery = "",
   catalogMode = "",
   catalogGroup = "",
@@ -135,6 +136,29 @@ function persist() {
 }
 function selectedLessons() {
   return LESSONS.filter((l) => category === "all" || l.category === category);
+}
+function lessonMapMarkup() {
+  const groups = new Map();
+  for (const item of selectedLessons()) {
+    const section = item.source.section;
+    if (!groups.has(section)) groups.set(section, []);
+    groups.get(section).push(item);
+  }
+  return `<section class="lesson-map" aria-labelledby="map-title">
+    <header class="map-heading"><div><div class="eyebrow">自由选课</div><h1 id="map-title">关卡地图</h1><p>全部关卡开放，按章节学习，也可以从任意一课开始。</p></div><button class="button" data-action="practice">继续练习 <span aria-hidden="true">→</span></button></header>
+    ${[...groups].map(([section, items], index) => `<section class="map-section" aria-labelledby="map-section-${index}">
+      <header class="map-section-heading"><h2 id="map-section-${index}">${escape(section)}</h2><span>${items.filter((item) => completed.includes(item.id)).length} / ${items.length} 已完成</span></header>
+      <div class="lesson-grid">${items.map((item) => {
+        const done = completed.includes(item.id);
+        const current = item.id === lesson.id;
+        return `<button class="lesson-card ${current ? "current" : ""} ${done ? "completed" : ""}" data-lesson="${item.id}" ${current ? 'aria-current="step"' : ""}>
+          <span class="lesson-card-top"><span class="lesson-number">${String(LESSONS.indexOf(item) + 1).padStart(2, "0")}</span><span class="lesson-card-status">${done ? "✓ 已完成" : current ? "当前练习" : "未练习"}</span></span>
+          <strong>${escape(item.title)}</strong><span class="lesson-card-description">${escape(item.description)}</span>
+          <span class="lesson-card-bottom"><span>${item.steps.length} 步</span><span>${done ? "再练一次" : "开始练习"} ↗</span></span>
+        </button>`;
+      }).join("")}</div>
+    </section>`).join("")}
+  </section>`;
 }
 function actionLabel(step) {
   return step.type === "text"
@@ -234,24 +258,26 @@ function render(focusId) {
   root.innerHTML = `
     <div class="app-shell">
       <header class="masthead">
-        <a href="#practice" class="brand" data-action="home" aria-label="Helix 练习场首页"><span class="brand-name">Helix<span>练习报</span></span></a>
+        <a href="#map" class="brand" data-action="home" aria-label="Helix 练习场首页"><span class="brand-name">Helix<span>练习报</span></span></a>
       </header>
       <aside class="sidebar ${mobileMenu ? "is-open" : ""}" aria-label="练习导航">
         <button class="drawer-close button small" data-action="menu" aria-label="关闭课程">关闭</button>
         <div class="index-heading"><h2>课程</h2></div>
         <nav class="category-nav" aria-label="分类">${CATEGORIES.map((c) => `<button data-category="${c.id}" class="category-button ${category === c.id ? "active" : ""}" ${category === c.id ? 'aria-current="true"' : ""}><span class="category-icon">${c.icon}</span><span>${c.label}</span><small>${c.id === "all" ? LESSONS.length : LESSONS.filter((l) => l.category === c.id).length}</small></button>`).join("")}</nav>
-        <div class="sidebar-label lesson-heading">练习列表 <span>${list.length} 课</span></div>
-        <nav class="lesson-list" aria-label="选择练习">${list.map((l, index) => `${index === 0 || list[index - 1].source.section !== l.source.section ? `<div class="sidebar-label">${escape(l.source.section)}</div>` : ""}<button data-lesson="${l.id}" class="lesson-link ${l.id === lesson.id ? "active" : ""}" ${l.id === lesson.id ? 'aria-current="step"' : ""}><span class="lesson-status ${completed.includes(l.id) ? "done" : ""}">${completed.includes(l.id) ? "✓" : String(LESSONS.indexOf(l) + 1).padStart(2, "0")}</span><span>${l.title}</span>${l.id === lesson.id ? '<span class="tiny-arrow">↗</span>' : ""}</button>`).join("")}</nav>
+        ${track === "practice" ? `<div class="sidebar-label lesson-heading">练习列表 <span>${list.length} 课</span></div>
+        <nav class="lesson-list" aria-label="选择练习">${list.map((l, index) => `${index === 0 || list[index - 1].source.section !== l.source.section ? `<div class="sidebar-label">${escape(l.source.section)}</div>` : ""}<button data-lesson="${l.id}" class="lesson-link ${l.id === lesson.id ? "active" : ""}" ${l.id === lesson.id ? 'aria-current="step"' : ""}><span class="lesson-status ${completed.includes(l.id) ? "done" : ""}">${completed.includes(l.id) ? "✓" : String(LESSONS.indexOf(l) + 1).padStart(2, "0")}</span><span>${l.title}</span>${l.id === lesson.id ? '<span class="tiny-arrow">↗</span>' : ""}</button>`).join("")}</nav>` : ""}
         <div class="sidebar-bottom"><div class="progress-caption"><span>进度</span><strong>${total}<span> / ${LESSONS.length}</span></strong></div><div class="progress-track"><span style="width:${percent}%"></span></div><button class="text-button muted" data-action="clear-progress">重置进度</button></div>
       </aside>
       ${mobileMenu ? '<button class="drawer-scrim" data-action="menu" aria-label="关闭课程"></button>' : ""}
       <div class="workspace">
-        <header class="topbar"><div class="breadcrumb"><button class="menu-button" data-action="menu" aria-label="切换课程" aria-expanded="${mobileMenu}">☰</button><strong>${track === "practice" ? categoryData.label : track === "library" ? "目录" : "回忆"}</strong></div><div class="topbar-actions"><button class="button small" data-action="settings">键位</button><button class="button small" data-action="export">导出</button><button class="button small" data-action="about">帮助</button></div></header>
+        <header class="topbar"><div class="breadcrumb"><button class="menu-button" data-action="menu" aria-label="切换课程" aria-expanded="${mobileMenu}">☰</button><strong>${track === "map" ? "自由选课" : track === "practice" ? categoryData.label : track === "library" ? "目录" : "回忆"}</strong></div><div class="topbar-actions"><button class="button small" data-action="settings">键位</button><button class="button small" data-action="export">导出</button><button class="button small" data-action="about">帮助</button></div></header>
         <main id="main-content" tabindex="-1">
-          <nav class="track-nav" aria-label="学习轨道"><button class="${track === "practice" ? "active" : ""}" data-action="practice">练习 <small>${completed.length}/${LESSONS.length}</small></button><button class="${track === "library" ? "active" : ""}" data-action="library">目录</button><button class="${track === "recall" ? "active" : ""}" data-action="recall-next">文章回忆 <small>${ARTICLE_QUESTIONS.filter((q) => knowledge.includes(q.id)).length}/${ARTICLE_QUESTIONS.length}</small></button></nav>
+          <nav class="track-nav" aria-label="学习轨道"><button class="${track === "map" || track === "practice" ? "active" : ""}" data-action="map">关卡 <small>${completed.length}/${LESSONS.length}</small></button><button class="${track === "library" ? "active" : ""}" data-action="library">目录</button><button class="${track === "recall" ? "active" : ""}" data-action="recall-next">文章回忆 <small>${ARTICLE_QUESTIONS.filter((q) => knowledge.includes(q.id)).length}/${ARTICLE_QUESTIONS.length}</small></button></nav>
           ${notice ? `<div class="notice" role="status">${escape(notice)}<button class="text-button" data-action="dismiss-notice" aria-label="关闭提示">×</button></div>` : ""}
           ${
-            track === "library"
+            track === "map"
+              ? lessonMapMarkup()
+              : track === "library"
               ? libraryMarkup({
                   bindings,
                   knowledge,
@@ -271,6 +297,7 @@ function render(focusId) {
                   )
                 : `<div class="practice-layout">
             <section class="practice-panel" aria-labelledby="lesson-title">
+              <button class="text-button" data-action="map-return">← 返回关卡地图</button>
               <div class="lesson-header"><div><div class="eyebrow subtle">练习 ${String(lessonIndex + 1).padStart(2, "0")} <span>/ ${String(LESSONS.length).padStart(2, "0")}</span></div><h2 id="lesson-title">${lesson.title}</h2></div><span class="topic-chip">${categoryData.icon} ${categoryData.label}</span></div>
               <p class="lesson-description">${escape(lesson.description)}</p>
               <p class="source-note">依据 <a href="${escape(lesson.source.url)}" target="_blank" rel="noreferrer">${escape(lesson.source.section)} ↗</a> · <a href="${ARTICLE.url}" target="_blank" rel="noreferrer">原文</a></p>
@@ -437,6 +464,7 @@ function closeModal() {
 }
 function startLesson(id, navigate = true) {
   if (navigate && navigation) {
+    if (track === "map") mapEntry = navigation.key;
     navigation.push(() => startLesson(id, false));
     return;
   }
@@ -445,6 +473,7 @@ function startLesson(id, navigate = true) {
   operandAction = null;
   countInput = "";
   lesson = LESSONS[lessonIndex];
+  if (category !== "all" && category !== lesson.category) category = "all";
   state = createState(lesson);
   answerVisible = false;
   stepIndex = 0;
@@ -701,13 +730,8 @@ root.addEventListener("click", async (event) => {
     const nextCategory = button.dataset.category;
     navigation.push(() => {
       category = nextCategory;
-      track = "practice";
-      const list = selectedLessons();
-      if (!list.includes(lesson))
-        startLesson(
-          list.find((l) => !completed.includes(l.id))?.id || list[0].id,
-          false,
-        );
+      track = "map";
+      pending = [];
     });
     return;
   }
@@ -738,8 +762,16 @@ root.addEventListener("click", async (event) => {
     return;
   }
   switch (button.dataset.action) {
+    case "map":
+    case "map-return":
+      navigation.push(() => {
+        track = "map";
+        pending = [];
+      }, { restore: button.dataset.action === "map-return" ? mapEntry : false });
+      break;
     case "practice":
       navigation.push(() => {
+        if (category !== "all" && category !== lesson.category) category = "all";
         track = "practice";
         pending = [];
       });
@@ -775,7 +807,10 @@ root.addEventListener("click", async (event) => {
     case "home":
       event.preventDefault();
       category = "all";
-      startLesson(LESSONS[0].id);
+      navigation.push(() => {
+        track = "map";
+        pending = [];
+      });
       break;
     case "menu":
       mobileMenu = !mobileMenu;
@@ -1023,6 +1058,7 @@ function restoreContext(context) {
   pending = [];
 }
 if (history.state?.helix) restoreContext(history.state.context);
+else if (location.hash === "#practice") track = "practice";
 else if (location.hash === "#library") track = "library";
 else if (location.hash === "#recall") {
   track = "recall";
