@@ -1,10 +1,16 @@
+/** 原文标题、作者与基础出处链接。
+ * @type {import('./types.js').ArticleSource}
+ */
 export const ARTICLE = {
   title: "【推荐】后现代风格文本编辑器-Helix",
   author: "Tmacy",
   url: "https://www.cnblogs.com/tmacy/p/17916523.html",
 };
 
-// Stable lesson IDs preserve saved progress; chapter order follows the article.
+// 稳定课程标识用于保留本地进度；章节顺序遵循原文。
+/** 按原文顺序排列且保留稳定课程标识的章节。
+ * @type {import('./types.js').ArticleChapter[]}
+ */
 export const ARTICLE_CHAPTERS = [
   { id: "install", title: "Helix 安装", anchor: "helix-安装", lessons: [] },
   { id: "basics", title: "Helix 基本操作", anchor: "helix-基本操作", lessons: [] },
@@ -28,32 +34,73 @@ export const ARTICLE_CHAPTERS = [
   { id: "registers", title: "寄存器", anchor: "寄存器", lessons: ["adv-register", "adv-replace-yank"] },
 ];
 
+/** 生成文章章节的原始出处链接。
+ * @param {string} chapterId - 原文章节的稳定标识。
+ * @returns {import('./types.js').ArticleSource} 保留原文作者和标题，并定位到该章节锚点的出处记录。
+ */
 export function articleSource(chapterId) {
-  const chapter = ARTICLE_CHAPTERS.find((chapter) => chapter.id === chapterId);
+  /** 稳定章节标识对应的文章章节。
+   * @type {import('./types.js').ArticleChapter | undefined}
+   */
+  const chapter = ARTICLE_CHAPTERS.find(/** 在 ARTICLE_CHAPTERS 中定位符合当前条件的真实记录。
+   * @param {import('./types.js').ArticleChapter} chapter - 当前候选文章章节记录。
+   * @returns {boolean} 章节稳定标识是否与请求一致。
+   */
+  (chapter) => chapter.id === chapterId);
   return { ...ARTICLE, section: chapter.title, url: `${ARTICLE.url}#${encodeURIComponent(chapter.anchor)}` };
 }
 
+/** 组合文章命令题与确定性的选项顺序。
+ * @type {(chapter: string, name: string, description: string, alternatives: string, explanation: string) => import('./types.js').RecallQuestion}
+ * @param {string} chapter - 原文章节的稳定标识。
+ * @param {string} name - 当前记录的稳定名称。
+ * @param {string} description - 课程或问题的真实场景说明。
+ * @param {string} alternatives - 用空格分隔的官方命令干扰项，函数内部拆分为各个选项。
+ * @param {string} explanation - 与原文一致的答案解释。
+ * @returns {import('./types.js').RecallQuestion} 以官方命令为正确答案、选项按命令名排序且附原文章节出处的命令题。
+ */
 const command = (chapter, name, description, alternatives, explanation) => ({
   id: `article:${chapter}-${name}`,
   type: "command",
   command: name,
   description,
-  options: [name, ...alternatives.split(" ")].sort().map((name) => ({ name })),
+  options: [name, ...alternatives.split(" ")].sort().map(/** 为排序后的命令名生成题目选项记录。
+   * @param {string} name - 正确命令或拆分后的单个干扰命令名。
+   * @returns {import('./types.js').QuestionOption} 只包含命令名、不改变拼写的选项记录。
+   */
+  (name) => ({ name })),
   explanation,
   source: articleSource(chapter),
 });
+/** 组合文章概念题与原始解释。
+ * @type {(chapter: string, id: string, description: string, answer: string, alternatives: string[], explanation: string) => import('./types.js').RecallQuestion}
+ * @param {string} chapter - 原文章节的稳定标识。
+ * @param {string} id - 不会覆盖现有配置的稳定记录标识。
+ * @param {string} description - 课程或问题的真实场景说明。
+ * @param {string} answer - 概念题的实际正确答案。
+ * @param {string[]} alternatives - 已按完整文本分项的概念干扰选项，不按空格拆分。
+ * @param {string} explanation - 与原文一致的答案解释。
+ * @returns {import('./types.js').RecallQuestion} 保留正确答案完整文字、排序选项和原文章节出处的概念题。
+ */
 const concept = (chapter, id, description, answer, alternatives, explanation) => ({
   id: `article:${chapter}-${id}`,
   type: "concept",
   description,
   answer,
-  options: [answer, ...alternatives].sort().map((name) => ({ name })),
+  options: [answer, ...alternatives].sort().map(/** 为正确答案和完整概念干扰项生成选项记录。
+   * @param {string} name - 一个完整的概念答案，不因其中含空格而拆分。
+   * @returns {import('./types.js').QuestionOption} 原样保留该答案文本的选项记录。
+   */
+  (name) => ({ name })),
   explanation,
   source: articleSource(chapter),
 });
 
-// Scenarios are authored from the linked article, not sampled from the full catalog.
-// Command spelling and execution semantics follow the app's pinned Helix version.
+// 题目场景根据链接原文独立编写，不从完整目录随机抽取。
+// 命令拼写与执行语义遵循应用固定的 Helix 版本。
+/** 根据原文独立编写的全部命令题与概念题。
+ * @type {import('./types.js').RecallQuestion[]}
+ */
 export const ARTICLE_QUESTIONS = [
   concept("install", "macos", "按文章在 macOS 上用 Homebrew 安装 Helix，应执行哪条命令？", "brew install helix", ["brew install hx-tutor", "hx --grammar build", "cargo install helix-runtime"], "文章的 macOS / Homebrew Core 小节使用 brew install helix。"),
   concept("install", "health", "安装完成后，想检查 Helix 的运行环境和语言支持，应执行哪条命令？", "hx --health", ["hx --tutor", "hx --grammar fetch", "hx --grammar build"], "--health 检查健康状态；grammar fetch / build 分别获取、编译语法库。"),
@@ -95,9 +142,27 @@ export const ARTICLE_QUESTIONS = [
   concept("registers", "black-hole", "希望丢弃写入内容、不保留到普通寄存器，应该使用哪个特殊寄存器？", "_", ["%", "+", "#"], "下划线是黑洞寄存器；+ 对应系统剪贴板，% 是当前文件名，# 是选择序号。"),
 ];
 
+/** 跳过已掌握题目并在文章题目集合内循环。
+ * @param {string[]} knowledge - 已经掌握的稳定知识题标识。
+ * @param {string | undefined} currentId - 当前题目的稳定标识。
+ * @returns {import('./types.js').RecallQuestion} 返回该操作的实际计算结果。
+ */
 export function nextArticleQuestion(knowledge, currentId) {
-  const start = ARTICLE_QUESTIONS.findIndex((question) => question.id === currentId);
+  /** 当前范围的起始偏移。
+   * @type {number}
+   */
+  const start = ARTICLE_QUESTIONS.findIndex(/** 在 ARTICLE_QUESTIONS 中定位符合当前条件的真实记录。
+   * @param {import('./types.js').RecallQuestion} question - 当前需要返回或比较的知识题。
+   * @returns {boolean} 返回该操作的实际计算结果。
+   */
+  (question) => question.id === currentId);
+  /** 此前修改累积造成的位置偏移。
+   * @type {number}
+   */
   for (let offset = 1; offset <= ARTICLE_QUESTIONS.length; offset++) {
+    /** 当前需要返回或比较的知识题。
+     * @type {import('./types.js').RecallQuestion}
+     */
     const question = ARTICLE_QUESTIONS[(start + offset) % ARTICLE_QUESTIONS.length];
     if (!knowledge.includes(question.id)) return question;
   }

@@ -1,7 +1,4 @@
-// Chinese learning labels for all Helix 25.07.1 registered commands.
-// Translated from the official English descriptions preserved in catalog.js.
-// Static names are bare; typable command names have a leading colon.
-export const COMMAND_ZH = {
+{
   "move_char_left": "移动向左一个字符",
   "move_char_right": "移动向右一个字符",
   "move_line_up": "移动向上一条逻辑行",
@@ -396,4 +393,4 @@ export const COMMAND_ZH = {
   ":read": "把文件内容读入缓冲区",
   ":echo": "将参数显示在状态栏",
   ":noop": "不执行任何操作"
-};
+}
