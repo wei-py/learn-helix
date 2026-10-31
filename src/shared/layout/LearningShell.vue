@@ -6,10 +6,10 @@ import 'virtual:uno.css';
 import '../styles/tokens.css';
 
 /**
- * 两个应用共享的报头、路由和进度展示数据。
- * @type {Readonly<{brand: string, subtitle: string, active: string, progressLabel: string}>}
+ * 学习页面的品牌、路由和进度展示数据。
+ * @type {Readonly<{brand: string, active: string, progressLabel: string}>}
  */
-const props = defineProps({ brand: { type: String, required: true }, subtitle: { type: String, default: '' }, active: { type: String, default: 'map' }, progressLabel: { type: String, default: '' } });
+const props = defineProps({ brand: { type: String, required: true }, active: { type: String, default: 'map' }, progressLabel: { type: String, default: '' } });
 /**
  * 仅转发导航与工具意图，具体业务由应用处理。
  * @type {(event: 'navigate' | 'settings' | 'help' | 'export', route?: string) => void}
@@ -32,13 +32,13 @@ const root = scroll.root;
 const position = scroll.position;
 /**
  * 顶栏始终可访问的四个主要页面，不生成抽屉侧栏。
- * @type {{id: string, title: string, icon: string}[]}
+ * @type {{id: string, title: string}[]}
  */
 const routes = [
-  { id: 'map', title: '课程地图', icon: 'map' },
-  { id: 'practice', title: '自由练习', icon: 'practice' },
-  { id: 'library', title: '速查目录', icon: 'library' },
-  { id: 'recall', title: '回忆练习', icon: 'recall' },
+  { id: 'map', title: '课程' },
+  { id: 'practice', title: '练习' },
+  { id: 'library', title: '速查' },
+  { id: 'recall', title: '回忆' },
 ];
 
 /**
@@ -68,22 +68,19 @@ function backToTop() {
   <a href="#main-content" class="skip-link" @click.prevent="skipToMain">跳到主要内容</a>
   <div id="scroll-root" ref="root" class="learning-shell" tabindex="0" role="region" aria-label="学习页面">
     <header class="learning-topbar">
-      <div class="learning-topbar__masthead">
-        <button type="button" class="learning-brand" @click="navigate('map')">{{ brand }}</button>
-        <span v-if="subtitle" class="learning-subtitle">{{ subtitle }}</span>
-        <span v-if="progressLabel" class="learning-progress" aria-live="polite">{{ progressLabel }}</span>
-      </div>
-      <div class="learning-topbar__navigation">
+      <div class="learning-topbar__inner">
+        <button type="button" class="learning-brand" @click="navigate('map')"><span class="learning-brand__mark" aria-hidden="true">&gt;_</span>{{ brand }}</button>
         <nav class="learning-nav" aria-label="主要导航">
-          <BaseButton v-for="route in routes" :key="route.id" :icon="route.icon" variant="text" :aria-current="props.active === route.id ? 'page' : undefined" @click="navigate(route.id)">{{ route.title }}</BaseButton>
+          <BaseButton v-for="route in routes" :key="route.id" variant="text" :aria-current="props.active === route.id ? 'page' : undefined" @click="navigate(route.id)">{{ route.title }}</BaseButton>
         </nav>
         <div class="learning-tools" aria-label="学习工具">
-          <BaseButton icon="export" variant="text" @click="emit('export')">导出</BaseButton>
-          <BaseButton icon="settings" variant="text" @click="emit('settings')">设置</BaseButton>
-          <BaseButton icon="help" variant="text" @click="emit('help')">帮助</BaseButton>
+          <BaseButton variant="text" @click="emit('help')">帮助</BaseButton>
+          <BaseButton variant="text" @click="emit('settings')">设置</BaseButton>
+          <BaseButton variant="text" @click="emit('export')">导出 ↗</BaseButton>
         </div>
       </div>
     </header>
+    <div v-if="progressLabel" class="learning-meta"><span class="learning-progress" aria-live="polite">{{ progressLabel }}</span></div>
     <div v-if="$slots.notice" class="learning-notice" role="status"><slot name="notice" /></div>
     <div class="learning-columns" :class="{ 'learning-columns--guide': Boolean($slots.guide) }">
       <main id="main-content" class="learning-main" tabindex="-1"><slot /></main>

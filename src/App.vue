@@ -44,7 +44,7 @@ function articleProgress() { return ARTICLE_QUESTIONS.filter(/**
  */ (question) => store.knowledge.includes(question.id)).length; }
 </script>
 <template>
-  <LearningShell brand="Helix 练习报" subtitle="选择优先 · 真实编辑 · 自由学习" :active="String(route.name || 'map')" :progress-label="`课程 ${store.completed.length}/${LESSONS.length} · 文章 ${articleProgress()}/${ARTICLE_QUESTIONS.length}`" @navigate="navigate" @settings="store.openModal('settings')" @export="store.openModal('export')" @help="store.openModal('about')">
+  <LearningShell brand="Helix 练习" :active="String(route.name || 'map')" :progress-label="`课程 ${store.completed.length}/${LESSONS.length} · 文章 ${articleProgress()}/${ARTICLE_QUESTIONS.length}`" @navigate="navigate" @settings="store.openModal('settings')" @export="store.openModal('export')" @help="store.openModal('about')">
     <template v-if="store.notice" #notice><div class="notice" role="status">{{ store.notice }}<BaseButton aria-label="关闭提示" variant="text" icon="close" @click="store.notice = ''"></BaseButton></div></template>
     <RouterView />
     <template v-if="route.name === 'practice'" #guide><PracticeGuide /></template>
