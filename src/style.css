@@ -1,6 +1,6 @@
 .eyebrow {
   font: 11px/1.6 var(--font-mono);
-  letter-spacing: 1.4px;
+  letter-spacing: 0;
   color: var(--accent);
 }
 .practice-panel {
@@ -8,14 +8,17 @@
 }
 .lesson-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: start;
   gap: 12px;
 }
 .lesson-header h2 {
-  font-size: 29px;
+  font-size: 32px;
   margin: 8px 0;
   line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: -.025em;
 }
 .subtle {
   font-size: 10px;
@@ -23,7 +26,8 @@
 .topic-chip {
   font-size: 11px;
   padding: 5px 8px;
-  border: 1px solid var(--rule);
+  border: 0;
+  border-radius: 0;
   white-space: nowrap;
 }
 .lesson-description {
@@ -36,7 +40,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--rule);
   border-bottom: 0;
   background: var(--paper-muted);
   font: 11px var(--font-mono);
@@ -50,10 +54,6 @@
 .editor-tab > span:last-child {
   margin-left: 15px;
 }
-.editor-caption {
-  font: 11px sans-serif;
-  color: var(--ink-muted);
-}
 .editor {
   background: var(--paper-raised);
   color: var(--ink);
@@ -63,7 +63,7 @@
   max-height: 60dvh;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--rule);
   border-bottom: 0;
   cursor: text;
   font: 15px/28px var(--font-mono);
@@ -122,7 +122,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--rule);
   font: 10px var(--font-mono);
   background: var(--paper-muted);
   min-height: 33px;
@@ -135,7 +135,7 @@
   padding: 8px 10px;
   background: var(--ink);
   color: var(--paper-raised);
-  font-weight: bold;
+  font-weight: 400;
 }
 .mode-badge.select {
   background: var(--accent);
@@ -143,7 +143,7 @@
 .mode-badge.insert {
   background: var(--paper-raised);
   color: var(--accent);
-  border-right: 1px solid var(--ink);
+  border-right: 1px solid var(--rule);
 }
 .editor-status-right {
   margin-left: auto;
@@ -169,7 +169,7 @@
 }
 .feedback strong {
   display: block;
-  font-weight: 500;
+  font-weight: 400;
 }
 .feedback small {
   display: block;
@@ -181,12 +181,13 @@
   font: 20px var(--font-mono);
 }
 .feedback.error {
-  color: var(--accent);
-  border-bottom: 2px solid var(--accent);
+  color: var(--danger);
+  border-bottom: 1px solid var(--danger);
 }
 .feedback.success {
-  border-bottom: 3px double var(--ink);
-  font-weight: 600;
+  border-bottom: 1px solid var(--success);
+  color: var(--success);
+  font-weight: 400;
 }
 .keyboard-area {
   padding: 21px 0 8px;
@@ -200,6 +201,7 @@
 .section-heading h3 {
   margin: 0;
   font-size: 16px;
+  font-weight: 400;
 }
 .section-heading > span {
   font-size: 11px;
@@ -218,6 +220,7 @@
   min-height: 42px;
   padding: 6px 9px;
   border: 1px solid var(--rule);
+  border-radius: 0;
   font-size: 12px;
   max-width: 100%;
 }
@@ -226,14 +229,14 @@
 }
 .key-control.suggested {
   border-color: var(--accent);
-  background: #ebe1d5;
+  background: var(--accent-soft);
 }
 kbd,
 .literal {
   display: inline-block;
   font: 12px/1.5 var(--font-mono);
   border: 1px solid var(--rule-strong);
-  border-bottom: 2px solid var(--ink);
+  border-radius: 0;
   background: var(--paper-raised);
   padding: 2px 5px;
   color: var(--ink);
@@ -242,7 +245,7 @@ kbd,
   white-space: normal;
 }
 .lesson-footer {
-  border-top: 1px solid var(--ink);
+  border-top: 1px solid var(--rule);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -256,7 +259,7 @@ kbd,
   color: var(--ink-muted);
 }
 .guide-card {
-  border-top: 3px solid var(--ink);
+  border-top: 1px solid var(--rule);
   padding-top: 13px;
 }
 .guide-mark {
@@ -305,7 +308,7 @@ kbd,
   border-color: var(--ink);
 }
 .steps li.current > div {
-  font-weight: 600;
+  color: var(--ink);
 }
 .steps li.finished .step-marker {
   color: var(--accent);
@@ -317,17 +320,17 @@ kbd,
 }
 .concept-card {
   padding-top: 15px;
-  border-top: 3px double var(--ink);
+  border-top: 1px solid var(--rule);
 }
 .concept-card summary {
   font-family: var(--font-serif);
 }
 .concept-card p {
-  font: 15px/1.95 var(--font-serif);
+  font: 14px/1.8 var(--font-body);
   margin: 0;
 }
 .goal-preview {
-  border-top: 1px solid var(--ink);
+  border-top: 1px solid var(--rule);
   min-width: 0;
 }
 summary {
@@ -381,7 +384,7 @@ summary {
   font-size: 13px;
 }
 .binding-field input[aria-invalid="true"] {
-  border: 2px solid var(--accent);
+  border: 1px solid var(--danger);
 }
 .insert-form {
   padding: 15px 0;
@@ -418,18 +421,18 @@ summary {
   display: flex;
   flex-wrap: wrap;
   gap: 0;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
 }
 .mode-tabs > button {
   padding: 12px 15px;
   min-height: 44px;
   font-size: 13px;
-  border-bottom: 3px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 .mode-tabs > button.active {
   border-color: var(--accent);
   color: var(--accent);
-  font-weight: bold;
+  font-weight: 400;
 }
 .mode-tabs code {
   font-size: 11px;
@@ -464,6 +467,7 @@ summary {
 .binding-row strong {
   font-size: 14px;
   display: block;
+  font-weight: 400;
 }
 .binding-row code {
   display: block;
@@ -490,8 +494,8 @@ summary {
 }
 .field-error,
 .binding-field small.field-error {
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--danger);
+  font-weight: 400;
 }
 .modal-footer {
   position: relative;
@@ -501,7 +505,7 @@ summary {
   flex-wrap: wrap;
   gap: 12px;
   padding: 18px 0;
-  border-top: 2px solid var(--ink);
+  border-top: 1px solid var(--rule);
   background: var(--paper);
   z-index: 2;
 }
@@ -536,14 +540,18 @@ summary {
 }
 .about-content h3 {
   font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -.025em;
   margin-bottom: 6px;
 }
 .catalog-panel {
   min-width: 0;
 }
 .catalog-panel h2 {
-  font-size: 32px;
-  margin: 9px 0 14px;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -.025em;
+  margin: 0 0 24px;
 }
 .catalog-panel > p {
   font-size: 14px;
@@ -587,7 +595,7 @@ summary {
   align-items: start;
   gap: 12px;
   padding: 21px 0;
-  border-top: 1px solid var(--ink);
+  border-top: 1px solid var(--rule);
 }
 .catalog-row > div {
   min-width: 0;
@@ -599,6 +607,7 @@ summary {
 }
 .catalog-row h3 {
   font-size: 14px;
+  font-weight: 400;
   margin: 9px 0;
   overflow-wrap: anywhere;
 }
@@ -616,7 +625,7 @@ summary {
   margin-right: 8px;
 }
 .catalog-result {
-  font-size: 12px !important;
+  font-size: 12px;
   color: var(--ink-muted);
 }
 .source-note {
@@ -633,9 +642,10 @@ summary {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 15px;
-  padding: 20px;
-  margin: 24px 0;
-  border: 1px solid var(--ink);
+  padding: 24px 0;
+  margin: 32px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
 .add-binding h3,
 .add-binding small {
@@ -644,6 +654,7 @@ summary {
 }
 .add-binding h3 {
   font-size: 22px;
+  font-weight: 400;
 }
 .add-binding label {
   font-size: 13px;
@@ -657,14 +668,16 @@ summary {
 .operand-form {
   display: grid;
   gap: 12px;
-  border: 2px solid var(--accent);
-  padding: 20px;
+  border-top: 1px solid var(--rule-strong);
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 24px 0;
   margin: 20px 0;
   background: var(--paper-raised);
 }
 .operand-form h3 {
   margin: 0;
   font-size: 21px;
+  font-weight: 400;
 }
 .operand-form p,
 .operand-form label {
@@ -693,10 +706,11 @@ summary {
   min-height: 440px;
 }
 .recall-scenario {
-  border-top: 3px double var(--ink);
-  border-bottom: 1px solid var(--ink);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   padding: 25px 0;
-  font: 600 26px/1.8 var(--font-serif) !important;
+  font: 400 28px/1.65 var(--font-body);
+  letter-spacing: -.025em;
   margin: 24px 0;
 }
 .recall-options {
@@ -717,9 +731,10 @@ summary {
   max-width: 100%;
 }
 .recall-keyboard {
-  border: 1px solid var(--ink);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   background: var(--paper-raised);
-  padding: 24px;
+  padding: 24px 0;
   margin: 24px 0;
   font-size: 14px;
 }
@@ -737,9 +752,6 @@ summary {
   .topic-chip {
     font-size: 10px;
     padding: 4px;
-  }
-  .editor-caption {
-    display: none;
   }
   .editor {
     min-height: 215px;
@@ -790,7 +802,7 @@ summary {
     font-size: 12px;
   }
   .recall-scenario {
-    font-size: 22px !important;
+    font-size: 20px;
   }
   .insert-form > div {
     flex-wrap: wrap;
@@ -813,7 +825,7 @@ summary {
   }
   .add-binding {
     grid-template-columns: 1fr;
-    padding: 15px;
+    padding: 24px 0;
   }
   .modal-footer {
     gap: 8px;
@@ -830,19 +842,52 @@ summary {
     font-size: 11px;
   }
   .operand-form {
-    padding: 15px;
+    padding: 24px 0;
   }
 }
 
-.course-controls,
+.course-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+}
 .category-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 4px 8px;
+  min-width: 0;
 }
-.course-controls > .category-filters { flex-basis: 100%; }
+.category-filters > .base-button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: var(--ink-muted);
+  background: transparent;
+}
+.category-filters > .base-button[aria-pressed="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.category-filters > .base-button:hover:not(:disabled) {
+  color: var(--paper);
+  background: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.category-filters small {
+  margin-left: 4px;
+  font-size: 10px;
+}
+.course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
 .binding-row {
   height: 100%;
   grid-template-columns: minmax(0, 1fr) minmax(160px, 230px) 42px;
