@@ -52,7 +52,7 @@ const groups = computed(/**
    */ const lesson of LESSONS) {
     if ((route.query.category || 'all') !== 'all' && lesson.category !== route.query.category) continue;
     if (!chapters.has(lesson.source.section)) chapters.set(lesson.source.section, { id: lesson.source.section, title: lesson.source.section, lessons: [] });
-    chapters.get(lesson.source.section).lessons.push({ id: lesson.id, title: lesson.title, description: lesson.description, completed: store.completed.includes(lesson.id), type: `${lesson.steps.length} 步${lesson.id === store.lesson.id ? ' · 当前练习' : ''}` });
+    chapters.get(lesson.source.section).lessons.push({ id: lesson.id, title: lesson.title, description: lesson.description, completed: store.completed.includes(lesson.id), type: `${lesson.steps.length} 步` });
   }
   return [...chapters.values()];
 });
@@ -97,8 +97,16 @@ function resumePractice() {
 }
 </script>
 <template>
-  <div class="course-controls"><nav class="category-filters" aria-label="课程分类"><BaseButton v-for="category in CATEGORIES" :key="category.id" :variant="(route.query.category || 'all') === category.id ? 'primary' : 'secondary'" :aria-pressed="(route.query.category || 'all') === category.id" @click="filter(category.id)">{{ category.label }} <small>{{ countLessons(category.id) }}</small></BaseButton></nav><BaseButton @click="resumePractice">继续练习</BaseButton><BaseButton variant="text" @click="requestReset">重置进度</BaseButton></div>
-  <CourseMap title="关卡地图" description="全部 36 课开放。按文章章节学习，也可以从任意一课开始。" :groups="groups" :current-id="store.lesson.id" @select="start" />
+  <CourseMap title="课程地图" :groups="groups" :current-id="store.lesson.id" @select="start">
+    <template #controls>
+      <div class="course-controls">
+        <nav class="category-filters" aria-label="课程分类">
+          <BaseButton v-for="category in CATEGORIES" :key="category.id" variant="text" :aria-pressed="(route.query.category || 'all') === category.id" @click="filter(category.id)">{{ category.label }} <small>{{ countLessons(category.id) }}</small></BaseButton>
+        </nav>
+        <div class="course-actions"><BaseButton variant="primary" @click="resumePractice">继续练习 →</BaseButton><BaseButton variant="text" @click="requestReset">重置进度</BaseButton></div>
+      </div>
+    </template>
+  </CourseMap>
   <BaseDialog :open="confirmingReset" title="重置学习进度" @close="cancelReset">
     <p>清除所有课程完成标记和知识掌握记录？自定义键位会保留，此操作不能撤销。</p>
     <template #footer><BaseButton @click="cancelReset">保留进度</BaseButton><BaseButton variant="primary" @click="resetProgress">确认重置进度</BaseButton></template>
