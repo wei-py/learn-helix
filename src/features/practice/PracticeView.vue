@@ -166,10 +166,10 @@ function cursorPosition() { return `${store.editor.text.slice(0, store.editor.he
 </script>
 <template>
   <section class="practice-panel" aria-labelledby="lesson-title">
-    <BaseButton variant="text" @click="returnMap">← 返回关卡地图</BaseButton>
+    <BaseButton variant="text" @click="returnMap">← 返回课程地图</BaseButton>
     <div class="lesson-header"><div><div class="eyebrow subtle">练习 {{ String(store.lessonIndex + 1).padStart(2,'0') }} / {{ LESSONS.length }}</div><h2 id="lesson-title">{{ store.lesson.title }}</h2></div><span class="topic-chip">{{ categoryLabel() }}</span></div>
     <p class="lesson-description">{{ store.lesson.description }}</p><p class="source-note">依据 <a :href="store.lesson.source.url" target="_blank" rel="noreferrer">{{ store.lesson.source.section }} ↗</a> · <a :href="ARTICLE.url" target="_blank" rel="noreferrer">原文</a></p>
-    <div class="editor-chrome"><div class="editor-tab">practice.txt</div><span class="editor-caption">可交互的练习编辑区</span></div>
+    <div class="editor-chrome"><div class="editor-tab">practice.txt</div></div>
     <div id="editor" ref="editor" class="editor scroll-section" tabindex="0" role="group" :aria-label="`Helix 练习编辑区，当前${MODES[store.editor.mode]}模式。Tab 移至下一个控件。`" aria-describedby="keyboard-help" @keydown="keydown" @paste="paste" @compositionend="composition"><EditorText :state="store.editor" /></div>
     <div class="editor-status"><span class="mode-badge" :class="store.editor.mode">{{ store.editor.mode.toUpperCase() }}</span><span>practice.txt</span><span class="editor-status-right"><b v-if="store.pending.length" class="pending">{{ displayKey(store.pending.join(' ')) }} …</b><span>{{ cursorPosition() }}</span><span>UTF-8</span><span>TXT</span></span></div>
     <div class="feedback" :class="store.success ? 'success' : store.feedback.kind" role="status" aria-live="polite"><span class="feedback-icon" aria-hidden="true"><span v-if="store.success" class="i-carbon-checkmark" /><span v-else-if="store.feedback.kind === 'error'" class="i-carbon-warning-alt" /><span v-else class="i-carbon-arrow-right" /></span><div><strong>{{ store.success ? '本课完成。' : store.feedback.text }}</strong><small id="keyboard-help">点击编辑区输入 · 也可点按键 · Tab 离开</small></div><BaseButton v-if="!store.success" variant="text" @click="focusEditor">聚焦 ↗</BaseButton></div>
