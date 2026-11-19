@@ -18,13 +18,13 @@
 @theme {
   --font-paper: "LXGW WenKai GB", "PingFang SC", sans-serif;
   --font-code: "LXGW WenKai GB", "SFMono-Regular", Consolas, monospace;
-  --color-paper: #ffffff;
-  --color-ink: #171918;
-  --color-accent: #171918;
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --paper: #ffffff;
   --paper-raised: #ffffff;
   --paper-muted: #f5f6f5;
@@ -41,6 +41,7 @@
   --danger: #a13832;
   --danger-soft: #faf0ef;
   --focus: #285f47;
+  --selection: #dce8df;
   --font-serif: var(--font-body);
   --font-mono: "LXGW WenKai GB", "SFMono-Regular", Consolas, monospace;
   --font-body: "LXGW WenKai GB", "PingFang SC", sans-serif;
@@ -62,6 +63,49 @@
   -webkit-font-smoothing: antialiased;
 }
 
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #171918;
+  --paper-raised: #171918;
+  --paper-muted: #222624;
+  --ink: #e9eeeb;
+  --ink-muted: #a2aca6;
+  --rule: #343b37;
+  --rule-strong: #78877e;
+  --accent: #e9eeeb;
+  --accent-soft: #252c28;
+  --success: #9ac4aa;
+  --success-soft: #22352a;
+  --warning: #d5ba86;
+  --warning-soft: #342d20;
+  --danger: #e0a29b;
+  --danger-soft: #392825;
+  --focus: #9ac4aa;
+  --selection: #385743;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #171918;
+    --paper-raised: #171918;
+    --paper-muted: #222624;
+    --ink: #e9eeeb;
+    --ink-muted: #a2aca6;
+    --rule: #343b37;
+    --rule-strong: #78877e;
+    --accent: #e9eeeb;
+    --accent-soft: #252c28;
+    --success: #9ac4aa;
+    --success-soft: #22352a;
+    --warning: #d5ba86;
+    --warning-soft: #342d20;
+    --danger: #e0a29b;
+    --danger-soft: #392825;
+    --focus: #9ac4aa;
+    --selection: #385743;
+  }
+}
+
 * { box-sizing: border-box; }
 html, body { height: 100%; width: 100%; margin: 0; overflow: hidden; }
 body { min-width: 320px; line-height: 1.65; }
@@ -80,7 +124,7 @@ h1, h2, h3, h4 { font-family: var(--font-body); font-weight: 500; }
 pre, code, kbd, samp { font-family: var(--font-mono); }
 pre { white-space: pre; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-::selection { background: #dce8df; color: var(--ink); }
+::selection { background: var(--selection); color: var(--ink); }
 
 .learning-shell {
   --shell-sticky-offset: 96px;

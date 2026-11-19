@@ -8,6 +8,7 @@ import CoursesView from './features/courses/CoursesView.vue';
 import PracticeView from './features/practice/PracticeView.vue';
 import RecallView from './features/recall/RecallView.vue';
 
+import './shared/theme.js';
 import './style.css';
 
 

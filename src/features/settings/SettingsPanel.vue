@@ -5,6 +5,7 @@ import { ACTIONS, actionsFor, addBinding, ALL_COMMANDS, bindingId, DEFAULT_BINDI
 import { COMMAND_ZH } from '../../domain/catalog-zh.js';
 import BaseButton from '../../shared/base/BaseButton.vue';
 import VirtualList from '../../shared/business/VirtualList.vue';
+import { setTheme, systemDark, theme } from '../../shared/theme.js';
 import { useLearningStore } from '../../stores/learning.js';
 /**
  * 共享学习状态。
@@ -117,6 +118,7 @@ function defaults() { store.draft = { ...DEFAULT_BINDINGS }; store.settingsMessa
 function commandName(value) { return Array.isArray(value) ? value.join(' → ') : value; }
 </script>
 <template>
+  <div class="catalog-filters"><label>外观主题<select :value="theme" @change="setTheme($event.target.value)"><option value="auto">跟随系统（当前{{ systemDark ? '深色' : '浅色' }}）</option><option value="light">浅色</option><option value="dark">深色</option></select></label></div>
   <div class="mode-tabs" role="tablist" aria-label="快捷键模式"><button v-for="(label,value) in MODES" :key="value" role="tab" :aria-selected="mode === value" :class="{active:mode === value}" @click="setMode(value)">{{ label }}模式 <code>{{ value }}</code></button></div><div class="catalog-filters"><label>搜索键、命令、前缀<input id="settings-search" v-model="query" placeholder="space w / regex / goto"></label><label>分组<select id="settings-group" v-model="group"><option value="">全部前缀 / 分组</option><option v-for="item in groups" :key="item">{{ item }}</option></select></label></div><details class="syntax-help"><summary>键位写法与范围</summary><p>空格分隔前缀；支持 C-h、A-C、Meta-c、F1–F24。大小写有意义：A-c ≠ A-C。留空移除；Tab 用于网页导航，浏览器保留键可用屏幕输入。</p><p>冲突检测覆盖全部模式。修改的有效别名优先用于提示。移走的默认键导出为 no_op；sticky 属性不能迁移；不含 Picker / prompt 专属键。</p></details><p class="settings-count" role="status">{{ rows.length }} / {{ all.length }}（全部默认 {{ ACTIONS.length }} 项）</p>
   <template v-if="rows.length">
     <VirtualList :items="rows" :item-height="160" :height="448" item-key="id"><template #default="{item}"><div class="binding-row" role="listitem"><label class="scroll-section" tabindex="0" :for="`binding-${item.id}`"><strong>{{ item.label }}</strong><code>{{ commandName(item.command) }}</code></label><div class="binding-field"><input :id="`binding-${item.id}`" :value="store.draft[item.id]" :aria-label="`${MODES[item.mode]}模式：${commandName(item.command)}`" :aria-invalid="checked.errors[item.id] ? 'true' : undefined" spellcheck="false" autocomplete="off" @input="update($event,item.id)"><small class="scroll-section" tabindex="0" :class="{'field-error':checked.errors[item.id]}">{{ checked.errors[item.id] || `默认：${displayKey(item.key)}` }}</small></div><div class="binding-row-actions"><button class="reset-key" :aria-label="`恢复 ${commandName(item.command)}`" @click="reset(item.id)"><span class="i-carbon-reset" aria-hidden="true" /></button><button class="reset-key" :aria-label="`移除 ${commandName(item.command)}`" @click="remove(item.id)"><span class="i-carbon-trash-can" aria-hidden="true" /></button></div></div></template></VirtualList>
