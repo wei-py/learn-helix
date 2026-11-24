@@ -170,6 +170,9 @@ importers:
 
   .:
     dependencies:
+      allo-font:
+        specifier: ^1.0.3
+        version: 1.0.3
       dayjs:
         specifier: 1.11.23
         version: 1.11.23
@@ -1326,6 +1329,9 @@ packages:
 
   ajv@6.15.0:
     resolution: {integrity: sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw==}
+
+  allo-font@1.0.3:
+    resolution: {integrity: sha512-h1u1ukonlmfTYSRc+MPvrjJU/p12A5xmzXIw5YQXf1/VGNi00cnPJfTf1AxYZOHzXRxK2pBLV7GgxtOm7/f+DQ==}
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -3827,6 +3833,8 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
+
+  allo-font@1.0.3: {}
 
   ansi-regex@5.0.1: {}
 
