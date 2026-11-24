@@ -2,7 +2,7 @@
 
 ## 未发布 · 中英文字体
 
-- 中文使用 `@fontsource/lxgw-wenkai-tc` 提供的霞鹜文楷 TC，英文使用 `allo-font` 提供的 Allo。
+- 中文使用 `@fontsource/lxgw-wenkai` 提供的霞鹜文楷，英文使用 `allo-font` 提供的 Allo。
 
 ## 2.1.0 — 2026-11-19 · 深色模式
 

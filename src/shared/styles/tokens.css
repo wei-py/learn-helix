@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @import "allo-font/allo.css";
-@import "@fontsource/lxgw-wenkai-tc/400.css";
+@import "@fontsource/lxgw-wenkai/500.css";
 
 @theme {
-  --font-paper: "Allo", "LXGW WenKai TC", "PingFang SC", sans-serif;
-  --font-code: "Allo", "LXGW WenKai TC", "SFMono-Regular", Consolas, monospace;
+  --font-paper: "Allo", "LXGW WenKai", "PingFang SC", sans-serif;
+  --font-code: "Allo", "LXGW WenKai", "SFMono-Regular", Consolas, monospace;
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-accent: var(--accent);
@@ -31,8 +31,8 @@
   --focus: #285f47;
   --selection: #dce8df;
   --font-serif: var(--font-body);
-  --font-mono: "Allo", "LXGW WenKai TC", "SFMono-Regular", Consolas, monospace;
-  --font-body: "Allo", "LXGW WenKai TC", "PingFang SC", sans-serif;
+  --font-mono: "Allo", "LXGW WenKai", "SFMono-Regular", Consolas, monospace;
+  --font-body: "Allo", "LXGW WenKai", "PingFang SC", sans-serif;
   --z-base: 0;
   --z-card: 10;
   --z-sticky: 100;

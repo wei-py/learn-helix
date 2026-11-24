@@ -15,7 +15,7 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@fontsource/lxgw-wenkai-tc": "^5.3.1",
+    "@fontsource/lxgw-wenkai": "^5.3.0",
     "allo-font": "^1.0.3",
     "vue": "3.5.44",
     "pinia": "4.1.0",
