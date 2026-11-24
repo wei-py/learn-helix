@@ -170,6 +170,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/lxgw-wenkai-tc':
+        specifier: ^5.3.1
+        version: 5.3.1
       allo-font:
         specifier: ^1.0.3
         version: 1.0.3
@@ -432,6 +435,9 @@ packages:
   '@eslint/plugin-kit@0.7.3':
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+
+  '@fontsource/lxgw-wenkai-tc@5.3.1':
+    resolution: {integrity: sha512-oulAMD2B40s+em16ZgcawwoVcBLBackzByuNzOg6D99J4G5Jjf6QyDvQFHWt3lIy3GgzQGGiU9mjIUvx5k7r4A==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -3086,6 +3092,8 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
+
+  '@fontsource/lxgw-wenkai-tc@5.3.1': {}
 
   '@humanfs/core@0.19.2':
     dependencies:
